@@ -8,7 +8,7 @@ namespace InsiteXMLClient.Test
     [TestClass]
     public class UnitTest1
     {
-        private CamstarHelper helper => new CamstarHelper("localhost", 443, "camstaradmin", "abc123..");
+        private CamstarHelper helper => new CamstarHelper("172.17.176.217", 443, "camstaradmin", "abc123..");
 
         [TestMethod]
         public void NDO_Add_Test()

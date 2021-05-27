@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using ServiceReference1;
+﻿using ServiceReference1;
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -18,23 +17,9 @@ namespace Camstar.XMLClient.API.Utilities
             string str1 = "SOFTWARE\\Wow6432Node\\Camstar\\";
             string str2 = "SOFTWARE\\Camstar\\";
             string str3 = (string)null;
-            try
-            {
-                RegistryKey localMachine = Registry.LocalMachine;
-                RegistryKey registryKey1 = localMachine.OpenSubKey(str1 + subkey, false);
-                if (registryKey1 != null)
-                    str3 = (string)registryKey1.GetValue(value, (object)defaultValue);
-                if (string.IsNullOrEmpty(str3))
-                {
-                    RegistryKey registryKey2 = localMachine.OpenSubKey(str2 + subkey, false);
-                    if (registryKey2 != null)
-                        str3 = (string)registryKey2.GetValue(value, (object)defaultValue);
-                }
-            }
-            catch (Exception ex)
-            {
-                str3 = defaultValue;
-            }
+            
+            str3 = defaultValue;
+            
             return string.IsNullOrWhiteSpace(str3) ? defaultValue : str3;
         }
 

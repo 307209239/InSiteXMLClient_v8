@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Caching;
 using System.Threading;
 using System.Xml;
 
@@ -23,77 +22,11 @@ namespace Camstar.Utility
         private int _HttpTimeout = 180000;
         private int _HttpReadWriteTimeout = 300000;
         private int _changeNumber = ServerConnectionSettings.s_ChangeNumber;
-        private static EventLog s_EventLog = (EventLog)null;
         private static ServerConnectionSettings s_DefaultSettings = new ServerConnectionSettings();
         private static string s_DefaultConfigurationFile = (string)null;
-        private static HostFileChangeMonitor s_Monitor = (HostFileChangeMonitor)null;
+       
         private static int s_ChangeNumber = 0;
-
-        static ServerConnectionSettings()
-        {
-            try
-            {
-                if (!EventLog.SourceExists("InSite Server Connection Library"))
-                    EventLog.CreateEventSource("InSite Server Connection Library", "Camstar");
-                ServerConnectionSettings.s_EventLog = new EventLog("Camstar");
-                ServerConnectionSettings.s_EventLog.Source = "InSite Server Connection Library";
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError(string.Format("Error creating/modifying the event log.\r\n{0}", (object)ex.ToString()));
-                if (ServerConnectionSettings.s_EventLog != null)
-                    ;
-            }
-            try
-            {
-                RegistryKey localMachine = Registry.LocalMachine;
-                RegistryKey registryKey1 = localMachine.OpenSubKey("SOFTWARE\\Camstar\\Camstar InSite Server Connection", false);
-                if (registryKey1 != null)
-                    ServerConnectionSettings.s_DefaultConfigurationFile = (string)registryKey1.GetValue("ConfigPath");
-                if (string.IsNullOrEmpty(ServerConnectionSettings.s_DefaultConfigurationFile))
-                {
-                    RegistryKey registryKey2 = localMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Camstar\\Camstar InSite Server Connection", false);
-                    if (registryKey2 != null)
-                        ServerConnectionSettings.s_DefaultConfigurationFile = (string)registryKey2.GetValue("ConfigPath");
-                }
-            }
-            catch (Exception ex1)
-            {
-                try
-                {
-                    string message = string.Format("Getting config file name from the registry\r\n{0}", (object)ex1.ToString());
-                    Trace.TraceWarning(message);
-                    if (ServerConnectionSettings.s_EventLog != null)
-                        ServerConnectionSettings.s_EventLog.WriteEntry(message, EventLogEntryType.Warning);
-                }
-                catch (Exception ex2)
-                {
-                    Trace.TraceError(string.Format("Error writing to the event log. \r\n{0}", (object)ex2.ToString()));
-                }
-            }
-            ServerConnectionSettings.LoadConfigSettings(ServerConnectionSettings.s_DefaultConfigurationFile);
-            try
-            {
-                ServerConnectionSettings.s_Monitor = new HostFileChangeMonitor((IList<string>)new List<string>()
-        {
-          ServerConnectionSettings.s_DefaultConfigurationFile
-        });
-                ServerConnectionSettings.s_Monitor.NotifyOnChanged(new OnChangedCallback(ServerConnectionSettings.OnConfigFileChanged));
-            }
-            catch (Exception ex)
-            {
-                string message = string.Format("Error establishing change notifications\r\n{0}", (object)ex.ToString());
-                Trace.TraceWarning(message);
-                if (ServerConnectionSettings.s_EventLog == null)
-                    return;
-                ServerConnectionSettings.s_EventLog.WriteEntry(message, EventLogEntryType.Warning);
-            }
-        }
-
         public ServerConnectionSettings Clone() => (ServerConnectionSettings)this.MemberwiseClone();
-
-        public static EventLog EventLog => ServerConnectionSettings.s_EventLog;
-
         public string Host
         {
             get => this._Host;
@@ -169,8 +102,7 @@ namespace Camstar.Utility
                 {
                     string message = string.Format("Error checking log directory\r\n{0}", (object)ex.ToString());
                     Trace.TraceWarning(message);
-                    if (ServerConnectionSettings.s_EventLog != null)
-                        ServerConnectionSettings.s_EventLog.WriteEntry(message, EventLogEntryType.Warning);
+                  
                 }
             }
         }
@@ -412,42 +344,7 @@ namespace Camstar.Utility
             //return flag1;
         }
 
-        private static void OnConfigFileChanged(object obj)
-        {
-            if (ServerConnectionSettings.s_Monitor != null && ServerConnectionSettings.s_Monitor.HasChanged && ServerConnectionSettings.LoadConfigSettings(ServerConnectionSettings.s_DefaultConfigurationFile))
-            {
-                try
-                {
-                    EventHandler configFileChanged = ServerConnectionSettings.ConfigFileChanged;
-                    if (configFileChanged != null)
-                        configFileChanged((object)null, EventArgs.Empty);
-                }
-                catch (Exception ex)
-                {
-                    string message = string.Format("Error notifying for file changes\r\n{0}", (object)ex.ToString());
-                    Trace.TraceWarning(message);
-                    if (ServerConnectionSettings.s_EventLog != null)
-                        ServerConnectionSettings.s_EventLog.WriteEntry(message, EventLogEntryType.Warning);
-                }
-            }
-            ServerConnectionSettings.s_Monitor = (HostFileChangeMonitor)null;
-            try
-            {
-                ServerConnectionSettings.s_Monitor = new HostFileChangeMonitor((IList<string>)new List<string>()
-        {
-          ServerConnectionSettings.s_DefaultConfigurationFile
-        });
-                ServerConnectionSettings.s_Monitor.NotifyOnChanged(new OnChangedCallback(ServerConnectionSettings.OnConfigFileChanged));
-            }
-            catch (Exception ex)
-            {
-                string message = string.Format("Error establishing change notifications\r\n{0}", (object)ex.ToString());
-                Trace.TraceWarning(message);
-                if (ServerConnectionSettings.s_EventLog == null)
-                    return;
-                ServerConnectionSettings.s_EventLog.WriteEntry(message, EventLogEntryType.Warning);
-            }
-        }
+       
 
         public static string DefaultConfigurationFile
         {
@@ -457,7 +354,7 @@ namespace Camstar.Utility
                 if (string.IsNullOrWhiteSpace(value) || !File.Exists(value))
                     return;
                 Interlocked.Exchange<string>(ref ServerConnectionSettings.s_DefaultConfigurationFile, value);
-                ServerConnectionSettings.s_Monitor.Dispose();
+               
             }
         }
 

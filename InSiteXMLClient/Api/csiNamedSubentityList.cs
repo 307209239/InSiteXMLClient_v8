@@ -1,19 +1,71 @@
-﻿
+﻿using System;
+using System.Xml;
+using Camstar.XMLClient.Interface;
 
-namespace Camstar.XMLClient.Interface
+namespace Camstar.XMLClient.API
 {
-  public interface ICsiNamedSubentityList : ICsiObjectList, ICsiList, ICsiField, ICsiXmlElement
+  internal class CsiNamedSubentityList : 
+    CsiObjectList,
+    ICsiNamedSubentityList,
+    ICsiObjectList,
+    ICsiList,
+    ICsiField,
+    ICsiXmlElement
   {
-    ICsiNamedSubentity AppendItem(string name);
+    public CsiNamedSubentityList(ICsiDocument doc, XmlElement domElement)
+      : base(doc, domElement)
+    {
+    }
 
-    ICsiNamedSubentity DeleteItemByName(string name);
+    public CsiNamedSubentityList(ICsiDocument doc, string name, ICsiXmlElement parent)
+      : base(doc, name, parent)
+    {
+    }
 
-    ICsiNamedSubentity ChangeItemByName(string name);
+    public override bool IsNamedSubentityList() => true;
 
-    ICsiNamedSubentity ChangeItemByIndex(int index);
+    public ICsiNamedSubentity AppendItem(string name)
+    {
+      ICsiNamedSubentity ICsiNamedSubentity = (ICsiNamedSubentity) new CsiNamedSubentity(this.GetOwnerDocument(), "__listItem", (ICsiXmlElement) this);
+      ICsiNamedSubentity.SetAttribute("__listItemAction", "add");
+      ICsiNamedSubentity.SetName(name);
+      return ICsiNamedSubentity;
+    }
 
-    ICsiNamedSubentity GetItemByIndex(int index);
+    public ICsiNamedSubentity DeleteItemByName(string itemName)
+    {
+      ICsiNamedSubentity ICsiNamedSubentity = (ICsiNamedSubentity) new CsiNamedSubentity(this.GetOwnerDocument(), "__listItem", (ICsiXmlElement) this);
+      ICsiNamedSubentity.SetAttribute("__listItemAction", "delete");
+      CsiXmlHelper.FindCreateSetValue2((ICsiXmlElement) ICsiNamedSubentity, "__key", "__name", itemName, true);
+      return ICsiNamedSubentity;
+    }
 
-    ICsiNamedSubentity GetItemByName(string name);
+    public ICsiNamedSubentity ChangeItemByName(string itemName)
+    {
+      ICsiNamedSubentity ICsiNamedSubentity = (ICsiNamedSubentity) new CsiNamedSubentity(this.GetOwnerDocument(), "__listItem", (ICsiXmlElement) this);
+      ICsiNamedSubentity.SetAttribute("__listItemAction", "change");
+      CsiXmlHelper.FindCreateSetValue2((ICsiXmlElement) ICsiNamedSubentity, "__key", "__name", itemName, true);
+      return ICsiNamedSubentity;
+    }
+
+    public ICsiNamedSubentity ChangeItemByIndex(int index)
+    {
+      ICsiNamedSubentity ICsiNamedSubentity = (ICsiNamedSubentity) new CsiNamedSubentity(this.GetOwnerDocument(), "__listItem", (ICsiXmlElement) this);
+      ICsiNamedSubentity.SetAttribute("__listItemAction", "change");
+      CsiXmlHelper.FindCreateSetValue((ICsiXmlElement) ICsiNamedSubentity, "__index", Convert.ToString(index));
+      return ICsiNamedSubentity;
+    }
+
+    public ICsiNamedSubentity GetItemByIndex(int index)
+    {
+      CsiXmlElement csiXmlElementImpl = this.GetItem(index);
+      return csiXmlElementImpl == null ? (ICsiNamedSubentity) null : (ICsiNamedSubentity) new CsiNamedSubentity(this.GetOwnerDocument(), csiXmlElementImpl.GetDomElement());
+    }
+
+    public ICsiNamedSubentity GetItemByName(string name)
+    {
+      CsiXmlElement csiXmlElementImpl = this.GetItem(name);
+      return csiXmlElementImpl == null ? (ICsiNamedSubentity) null : (ICsiNamedSubentity) new CsiNamedSubentity(this.GetOwnerDocument(), csiXmlElementImpl.GetDomElement());
+    }
   }
 }

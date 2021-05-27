@@ -19,8 +19,6 @@ namespace Camstar.Utility
         private NetworkStream _Stream = (NetworkStream)null;
         private string _InboundXML = string.Empty;
         private string _InboundXMLFile = string.Empty;
-        private EventLog _EventLog = ServerConnectionSettings.EventLog;
-
         ~ServerConnection() => this.Disconnect();
 
         public virtual string Host
@@ -151,7 +149,7 @@ namespace Camstar.Utility
             catch (SocketException ex)
             {
                 this._TcpClient = (TcpClient)null;
-                this.LogError(string.Format("Connect to {0}:{1}", (object)this.Settings.Host, (object)this.Settings.Port), (Exception)ex);
+               
                 throw ex;
             }
             return flag;
@@ -192,7 +190,7 @@ namespace Camstar.Utility
                 }
                 catch (Exception ex)
                 {
-                    this.LogError("Sending XML document error", ex);
+                    
                     throw ex;
                 }
             }
@@ -220,14 +218,14 @@ namespace Camstar.Utility
                 }
                 catch (IOException ex)
                 {
-                    this.LogError("Receiving tcpClient IOException error", (Exception)ex);
+                   
                     if (this.Settings.LogXml)
                         this.LogDocument("XmlResponse", outputXML);
                     throw ex;
                 }
                 catch (Exception ex)
                 {
-                    this.LogError("Receiving server response XML document error", ex);
+                  
                     throw ex;
                 }
             }
@@ -349,7 +347,7 @@ namespace Camstar.Utility
                 }
                 catch (Exception ex)
                 {
-                    this.LogError("Submit() function", ex);
+                    
                     throw ex;
                 }
                 finally
@@ -406,7 +404,7 @@ namespace Camstar.Utility
             }
             catch (IOException ex)
             {
-                this.LogError("TCPClient receive time out", (Exception)ex);
+                
                 empty.TrimEnd(new char[1]);
                 throw ex;
             }
@@ -490,26 +488,8 @@ namespace Camstar.Utility
             return document;
         }
 
-        protected void LogEntry(string message, EventLogEntryType type)
-        {
-            try
-            {
-                Trace.Write(message);
-                if (this._EventLog == null)
-                    return;
-                this._EventLog.WriteEntry(message, type);
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError(string.Format("Error writing to the event log. \r\n{0}", (object)ex.ToString()));
-            }
-        }
-
-        protected void LogError(string message, Exception ex) => this.LogEntry(string.Format("{0}\r\n{1}", (object)message, (object)ex.ToString()), EventLogEntryType.Error);
-
-        protected void LogWarning(string message, Exception ex) => this.LogEntry(string.Format("{0}\r\n{1}", (object)message, (object)ex.ToString()), EventLogEntryType.Warning);
-
-        protected void LogInfo(string message) => this.LogEntry(message, EventLogEntryType.Information);
+     
+      
 
         protected virtual bool CheckLogPath(string path)
         {
@@ -522,7 +502,7 @@ namespace Camstar.Utility
             }
             catch (Exception ex)
             {
-                this.LogWarning("Checking log directory", ex);
+               
             }
             return flag;
         }
@@ -540,7 +520,7 @@ namespace Camstar.Utility
             }
             catch (Exception ex)
             {
-                this.LogWarning("Error appending context Id to log file name.", ex);
+                
             }
             stringBuilder.Append('_');
             stringBuilder.Append(suffix);
@@ -659,7 +639,7 @@ namespace Camstar.Utility
             catch (Exception ex)
             {
                 str1 = document;
-                this.LogEntry(string.Format("Password encrypting error: {0}", (object)ex.Message), EventLogEntryType.Error);
+                
             }
             finally
             {
@@ -684,7 +664,7 @@ namespace Camstar.Utility
             }
             catch (Exception ex)
             {
-                this.LogError("Error saving document to file.", ex);
+                
             }
         }
 
