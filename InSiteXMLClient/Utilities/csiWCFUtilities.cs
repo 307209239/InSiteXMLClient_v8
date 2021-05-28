@@ -1,44 +1,12 @@
-﻿using ServiceReference1;
-using System;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Text;
 
 namespace Camstar.XMLClient.API.Utilities
 {
     internal class csiWCFUtilities
     {
-        private const string Localhost = "localhost";
-
-        private static string GetValueFromCamstarRegistry(
-          string subkey,
-          string value,
-          string defaultValue)
-        {
-            string str1 = "SOFTWARE\\Wow6432Node\\Camstar\\";
-            string str2 = "SOFTWARE\\Camstar\\";
-            string str3 = (string)null;
-            
-            str3 = defaultValue;
-            
-            return string.IsNullOrWhiteSpace(str3) ? defaultValue : str3;
-        }
-
-        private static AuthenticationServiceClient AuthenticationClient(
-          string host)
-        {
-            bool flag1 = false;
-            if (string.IsNullOrEmpty(host))
-                host = "localhost";
-            else
-                flag1 = true;
-            UriBuilder uriBuilder = new UriBuilder(csiWCFUtilities.GetValueFromCamstarRegistry("Camstar InSite Common", "AuthenticationServiceUrl", string.Format("https://{0}/camstarsecurityservices/authenticationservice.svc", (object)host)));
-            if (flag1)
-                uriBuilder.Host = host;
-            Uri uri = uriBuilder.Uri;
-            bool flag2 = "https".Equals(uri.Scheme, StringComparison.OrdinalIgnoreCase);
-            EndpointAddress remoteAddress = new EndpointAddress(uri, Array.Empty<AddressHeader>());
-            return new AuthenticationServiceClient(flag2 ? (Binding)new BasicHttpsBinding() : (Binding)new BasicHttpBinding(), remoteAddress);
-        }
 
         public static string LogIn(
           string userName,
@@ -46,49 +14,77 @@ namespace Camstar.XMLClient.API.Utilities
           out string sessionId,
           string host)
         {
-            sessionId = string.Empty;
-            string str = string.Empty;
-            AuthenticationServiceClient authenticationServiceClient = csiWCFUtilities.AuthenticationClient(host);
             try
             {
-                var rq = new LoginFromXMLClientRequest(userName, userPassword,sessionId);
-                var rp = authenticationServiceClient.LoginFromXMLClientAsync(rq).GetAwaiter().GetResult();
-                var resultStatus = rp.LoginFromXMLClientResult;
-                sessionId = rp.sessionGuid;
-                if (resultStatus != null && !resultStatus.IsSuccess)
-                    str = resultStatus.Message;
-                
+                sessionId = string.Empty;
+                var xml =
+               "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\"><soapenv:Header/><soapenv:Body><tem:LoginFromXMLClient><tem:userName>camstaradmin</tem:userName><tem:password>17cd184d799d9e565a5917bf647259d08b40488f8b9d8b82</tem:password><tem:sessionGuid>1111111</tem:sessionGuid></tem:LoginFromXMLClient></soapenv:Body></soapenv:Envelope>";
+                byte[] bytes = Encoding.UTF8.GetBytes(xml);
+                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"https://{host}/camstarsecurityservices/authenticationservice.svc");
+                request.Method = "POST";
+                request.ContentLength = bytes.Length;
+                request.Headers.Add("SOAPAction", "http://tempuri.org/IAuthenticationService/LoginFromXMLClient");
+                request.ContentType = "text/xml;charset=UTF-8";
+                Stream reqstream = request.GetRequestStream();
+                reqstream.Write(bytes, 0, bytes.Length);
+                request.Timeout = 60000;
+                request.Headers.Set("Pragma", "no-cache");
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream streamReceive = response.GetResponseStream();
+                    Encoding encoding = Encoding.UTF8;
+
+                    StreamReader streamReader = new StreamReader(streamReceive, encoding);
+                    string strResult = streamReader.ReadToEnd();
+                    streamReceive.Dispose();
+                    streamReader.Dispose();
+                    var start = strResult.IndexOf("<sessionGuid>");
+                    if (start < 0)
+                    {
+                        return "error";
+                    }
+                    else
+                    {
+                        start += "<sessionGuid>".Length;
+                    }
+                    var end = strResult.IndexOf("</sessionGuid>");
+                    sessionId = strResult.Substring(start, end - start);
+
+
+                }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                str = ex.Message;
+                Console.WriteLine(e);
+                throw;
             }
-            finally
-            {
-                authenticationServiceClient.CloseAsync();
-            }
-            return str;
+
+            return "";
+
         }
 
         public static string Logout(string sessionId, string host)
         {
-            AuthenticationServiceClient authenticationServiceClient = csiWCFUtilities.AuthenticationClient(host);
-            string str = string.Empty;
-            try
-            {
-                ResultStatus resultStatus = authenticationServiceClient.LogoutAsync(sessionId).GetAwaiter().GetResult();
-                if (resultStatus != null && !resultStatus.IsSuccess)
-                    str = resultStatus.Message;
-            }
-            catch (Exception ex)
-            {
-                str = ex.Message;
-            }
-            finally
-            {
-                authenticationServiceClient.CloseAsync();
-            }
-            return str;
+
+            //string str = string.Empty;
+            //try
+            //{
+            //    ResultStatus resultStatus = authenticationServiceClient.LogoutAsync(sessionId).GetAwaiter().GetResult();
+            //    if (resultStatus != null && !resultStatus.IsSuccess)
+            //        str = resultStatus.Message;
+            //}
+            //catch (Exception ex)
+            //{
+            //    str = ex.Message;
+            //}
+            //finally
+            //{
+            //    authenticationServiceClient.CloseAsync();
+            //}
+            return "";
         }
+
     }
 }

@@ -117,6 +117,7 @@ namespace Camstar.Utility
                         this.Settings.Protocol = ApplicationProtocol.Http;
                         break;
                     case 443:
+                        
                         this.Settings.Protocol = ApplicationProtocol.Https;
                         break;
                     case 2150:
@@ -142,6 +143,7 @@ namespace Camstar.Utility
                 this._TcpClient.ReceiveBufferSize = 75000;
                 this._TcpClient.SendTimeout = this.Settings.SendTimeout;
                 this._TcpClient.ReceiveTimeout = this.Settings.ReceiveTimeout;
+               
                 this._TcpClient.Connect(this.Settings.Host, this.Settings.Port);
                 this._Stream = this._TcpClient.GetStream();
                 flag = true;
@@ -674,6 +676,7 @@ namespace Camstar.Utility
           X509Chain chain,
           SslPolicyErrors errors)
         {
+            return true;
             return (uint)errors <= 0U || (this.Settings.IgnoreInvalidCert || this.IsHostLocalMachine(this.Settings.Host));
         }
 
