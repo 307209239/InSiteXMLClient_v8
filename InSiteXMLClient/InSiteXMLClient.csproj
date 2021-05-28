@@ -5,10 +5,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>李德镇</Authors>
     <Product>李德镇</Product>
-    <Description>用于opcenter8 ,解决SSL问题，远程调用忽略证书，删除servicemodel，win32,eventlog Windows系统的依赖</Description>
-    <AssemblyVersion>8.0.0.1</AssemblyVersion>
-    <FileVersion>8.0.0.1</FileVersion>
-    <Version>8.0.1</Version>
+    <Description>用于opcenter8 
+解决SSL问题，远程调用忽略证书，删除servicemodel，win32,eventlog 等依赖</Description>
+    <AssemblyVersion>8.0.0.3</AssemblyVersion>
+    <FileVersion>8.0.0.3</FileVersion>
+    <Version>8.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

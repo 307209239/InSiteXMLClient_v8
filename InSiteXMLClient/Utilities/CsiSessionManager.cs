@@ -21,7 +21,7 @@ namespace Camstar.XMLClient.API.Utilities
         if (!CsiSessionManager.ConnectionsHashtable.ContainsKey(key))
         {
           string sessionId=String.Empty;
-          str2 = csiWCFUtilities.LogIn(userName, str1, out sessionId, host);
+          str2 = csiWCFUtilities.LogIn(userName,str1, out sessionId, host,port==443);
           if (string.IsNullOrEmpty(str2))
             CsiSessionManager.ConnectionsHashtable.TryAdd(key, new CsiSessionManager.SessionIdPair(sessionId)
             {
@@ -56,9 +56,9 @@ namespace Camstar.XMLClient.API.Utilities
                 if (DateTime.UtcNow - sessionIdPair.LastUsageUtcTime >= new TimeSpan(0, idleSessionTimeout, 0))
                 {
                   int licenseHolders = sessionIdPair.LicenseHolders;
-                  csiWCFUtilities.Logout(sessionIdPair.SessionId, host);
+                  csiWCFUtilities.Logout(sessionIdPair.SessionId, host,port==443);
                   CsiSessionManager.ConnectionsHashtable.TryRemove(key, out sessionIdPair);
-                  if (string.IsNullOrEmpty(csiWCFUtilities.LogIn(userName, str, out sessionId, host)))
+                  if (string.IsNullOrEmpty(csiWCFUtilities.LogIn(userName, str, out sessionId, host,port==443)))
                     CsiSessionManager.ConnectionsHashtable.TryAdd(key, new CsiSessionManager.SessionIdPair(sessionId)
                     {
                       LastUsageUtcTime = DateTime.UtcNow,
@@ -89,7 +89,7 @@ namespace Camstar.XMLClient.API.Utilities
           --sessionIdPair.LicenseHolders;
           if (sessionIdPair.LicenseHolders == 0)
           {
-            csiWCFUtilities.Logout(sessionIdPair.SessionId, host);
+            csiWCFUtilities.Logout(sessionIdPair.SessionId, host,port==443);
             CsiSessionManager.ConnectionsHashtable.TryRemove(key, out sessionIdPair);
           }
           else if (sessionIdPair.LicenseHolders < 0)
