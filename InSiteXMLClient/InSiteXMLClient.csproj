@@ -7,9 +7,9 @@
     <Product>李德镇</Product>
     <Description>用于opcenter8 
 解决SSL问题，远程调用忽略证书，删除servicemodel，win32,eventlog 等依赖</Description>
-    <AssemblyVersion>8.0.0.3</AssemblyVersion>
-    <FileVersion>8.0.0.3</FileVersion>
-    <Version>8.0.3</Version>
+    <AssemblyVersion>8.0.0.5</AssemblyVersion>
+    <FileVersion>8.0.0.5</FileVersion>
+    <Version>8.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

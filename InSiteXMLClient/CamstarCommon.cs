@@ -361,12 +361,22 @@ namespace InSiteXMLClient
             objectChanges.DataField("IsRevofRcd").SetValue(useRor);
             return objectChanges;
         }
-        public DataTable QueryTable(string sql)
+        /// <summary>
+        /// 执行sql 参数名在SQL语句中中以?开头
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public DataTable QueryTable(string sql, Dictionary<string, string> parameter = null)
         {
             var inputDoc = this._session.CreateDocument("AdHocQuery");
 
             var query = inputDoc.CreateQuery();
             query.SetSqlText(sql);
+            foreach (var pa in parameter?.Keys)
+            {
+                query.SetParameter(pa, parameter[pa]);
+            }
             var responseDoc = inputDoc.Submit();
 
             if (null != responseDoc)
@@ -402,6 +412,110 @@ namespace InSiteXMLClient
 
 
             }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取Model 参数名在SQL语句中中以?开头
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public IEnumerable<T> Query<T>(string sql,Dictionary<string,string>  parameter=null)
+        {
+            try
+            {
+                var inputDoc = this._session.CreateDocument("AdHocQuery");
+                var query = inputDoc.CreateQuery();
+                query.SetSqlText(sql);
+                foreach (var pa in parameter?.Keys)
+                {
+                    query.SetParameter(pa, parameter[pa]);
+                }
+               
+                var properties = typeof(T).GetProperties();
+
+                var responseDoc = inputDoc.Submit();
+                if (null != responseDoc)
+                {
+                    query = responseDoc.GetQuery();
+                    if (null != query)
+                    {
+                        var recordset = query.GetRecordset();
+                        if (null != recordset)
+                        {
+                            var data = new List<T>();
+                            for (var i = 0; i < recordset.GetRecordCount(); i++)
+                            {
+                                recordset.MoveNext();
+                                var arrOfQueryFields = recordset.GetFields();
+                                var model = Activator.CreateInstance(typeof(T));
+                                int x = 0;
+                                foreach (CsiRecordsetField recordSetField in arrOfQueryFields)
+                                {
+                                    var p = properties.FirstOrDefault(m => m.Name.ToLower() == recordSetField.GetName().ToLower());
+                                    var v = recordSetField.GetValue();
+                                    if (p != null)
+                                    {
+                                        switch (p.PropertyType.Name)
+                                        {
+                                            case "Int32":
+                                            case "Int16":
+                                                p.SetValue(model, int.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+                                            case "Int64":
+                                                p.SetValue(model, long.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+                                            case "Double":
+                                            case "Float":
+                                                p.SetValue(model, long.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+                                            case "Boolean":
+                                                p.SetValue(model, bool.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+                                            case "String":
+                                                p.SetValue(model, recordSetField.GetValue());
+                                                break;
+                                            case "DateTime":
+                                                p.SetValue(model, DateTime.Parse(string.IsNullOrEmpty(v) ? DateTime.MinValue.ToString() : v));
+                                                break;
+                                            case "Decimal":
+                                                p.SetValue(model, Decimal.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+                                            default:
+                                                p.SetValue(model, null);
+                                                break;
+                                        }
+                                        // p.SetValue(model, recordSetField.GetValue());
+                                        x++;
+                                    }
+
+                                }
+
+                                if (x > 0)
+                                {
+                                    data.Add((T)model);
+                                }
+
+
+
+                            }
+
+                            return data;
+                        }
+                    }
+
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
 
             return null;
         }

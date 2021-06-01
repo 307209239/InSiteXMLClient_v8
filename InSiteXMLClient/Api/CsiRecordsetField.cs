@@ -22,7 +22,7 @@ namespace Camstar.XMLClient.API
     {
       try
       {
-        return this.GetDomElement().FirstChild.Value ?? "";
+        return this.GetDomElement().FirstChild?.Value ?? "";
       }
       catch (Exception ex)
       {

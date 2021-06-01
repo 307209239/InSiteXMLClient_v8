@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -40,7 +42,25 @@ namespace InsiteXMLClient.Test
             Console.WriteLine(re.Message);
             Assert.IsTrue(re.Status);
         }
-
+        [TestMethod]
+        public void QueryTable_Test()
+        {
+            var com = helper;
+            var dt= com.QueryTable("select * from container where containername=?name", new Dictionary<string, string>() { { "name", "LOT01" } });
+            Assert.IsTrue(dt.Rows.Count>0);
+        }
+        [TestMethod]
+        public void QueryModel_Test()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+            var com = helper;
+            var dt = com.Query<Container>("select * from historymainline where containername=?name",new Dictionary<string, string>(){{"name","LOT01"}});
+            stopwatch.Stop();
+            Console.WriteLine("数据量：" + dt.Count());
+            Console.WriteLine("耗时："+ stopwatch.ElapsedMilliseconds+"ms");
+            Assert.IsTrue(dt.Any());
+        }
         [TestMethod]
         public void Login()
         {
@@ -49,5 +69,19 @@ namespace InsiteXMLClient.Test
 
         }
        
+    }
+
+    public class Container
+    {
+        public string ContainerName { get; set; }
+
+        public bool IsAutoStart { get; set; }
+
+        public int CDOTypeId { get; set; }
+
+        public DateTime TxnDate { get; set; }
+
+
+        public int Qty { get; set; }
     }
 }
