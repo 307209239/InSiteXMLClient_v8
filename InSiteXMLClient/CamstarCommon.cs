@@ -222,6 +222,38 @@ namespace InSiteXMLClient
 
         }
         /// <summary>
+        /// 执行service的setExecute，并提交文档到服务器，获取返回需要返回的字段结果信息
+        /// </summary>
+        /// <param name="requestFields">返回的字段 多节点用.分隔</param>
+        /// <returns></returns>
+        public (bool Status, string Message,ICsiDocument Document) ExecuteResult(IEnumerable<string> requestFields)
+        {
+            try
+            {
+                Execute();
+                var req = RequestData();
+                req.RequestField("CompletionMsg");
+                foreach (var item in requestFields)
+                {
+                    req.RequestField(item);
+                }
+                var responseDocument = Submit();
+                var b = false;
+                var msg = "";
+                b = !responseDocument.CheckErrors(s => msg = s);
+                return (Status: b, Message: msg,responseDocument);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + ":request:" + this._document.AsXml() + "\nresponse:" +
+                                    this._document.ResponseData()?.GetOwnerDocument()?.AsXml());
+                ;
+            }
+
+
+
+        }
+        /// <summary>
         /// 指定service执行的事件
         /// </summary>
         /// <param name="type">事件类型</param>
