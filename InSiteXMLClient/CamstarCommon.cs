@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Camstar.XMLClient.API;
+using Camstar.XMLClient.Interface;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Camstar.XMLClient.API;
-using Camstar.XMLClient.Interface;
 
 namespace InSiteXMLClient
 {
@@ -18,8 +17,9 @@ namespace InSiteXMLClient
         private ICsiService _service;
         private Guid _sessionId;
         public Guid SessionId => _sessionId;
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="host"></param>
         /// <param name="port"></param>
@@ -34,14 +34,10 @@ namespace InSiteXMLClient
             _sessionId = Guid.NewGuid();
             _connection = _client.CreateConnection(host, port);
             _session = _connection.CreateSession(userName, password, _sessionId.ToString());
-
         }
 
-
-
-
-
         #region Document操作
+
         /// <summary>
         /// 打印Document文档
         /// </summary>
@@ -50,6 +46,7 @@ namespace InSiteXMLClient
         {
             _document.Print(true);
         }
+
         /// <summary>
         /// 提交文档
         /// </summary>
@@ -91,41 +88,45 @@ namespace InSiteXMLClient
                         var data1 = (ICsiDataField)field;
                         p.SetValue(model, Convert.ChangeType(data1.GetValue(), p.PropertyType));
                         break;
+
                     case "CsiDataList":
                         var data2 = (ICsiDataList)field;
                         if (data2.HasChildren())
                         {
-
                         }
                         break;
+
                     case "CsiNamedObject":
                         var data3 = (ICsiNamedObject)field;
                         p.SetValue(model, Convert.ChangeType(data3.GetRef(), p.PropertyType));
                         break;
+
                     case "CsiNamedObjectList":
                         var data4 = (ICsiNamedObjectList)field;
                         if (data4.HasChildren())
                         {
-
                             p.GetSetMethod().Invoke(model, new[] { (from ICsiNamedObject item in data4.GetListItems() select item.GetRef()).ToList() });
                         }
                         break;
+
                     case "CsiRevisionedObject":
                         var data5 = (ICsiRevisionedObject)field;
                         p.SetValue(model, Convert.ChangeType(data5.GetName(), p.PropertyType));
                         break;
+
                     case "CsiRevisionedObjectList":
                         var data6 = (ICsiRevisionedObjectList)field;
                         if (data6.HasChildren())
                         {
-
                             p.GetSetMethod().Invoke(model, new[] { (from ICsiRevisionedObject item in data6.GetListItems() select item.GetName()).ToList() });
                         }
                         break;
+
                     case "CsiContainer":
                         var data7 = (ICsiContainer)field;
                         p.SetValue(model, Convert.ChangeType(data7.GetName(), p.PropertyType));
                         break;
+
                     case "CsiContainerList":
                         var data8 = (ICsiContainerList)field;
                         if (data8.HasChildren())
@@ -138,9 +139,6 @@ namespace InSiteXMLClient
 
             return model;
         }
-
-
-
 
         /// <summary>
         /// 创建文档和服务
@@ -155,7 +153,6 @@ namespace InSiteXMLClient
                 if (_service != null)
                 {
                     _service = null;
-
                 }
                 _document = _session.CreateDocument(documentName);
                 if (!string.IsNullOrEmpty(serviceName.Trim()))
@@ -164,17 +161,21 @@ namespace InSiteXMLClient
                 }
             }
         }
+
         /// <summary>
         /// 建立查询
         /// </summary>
         /// <returns></returns>
         public ICsiQuery CreateQuery()
         {
-            return _document.CreateQuery();
+            var inputDoc = this._session.CreateDocument("Query");
+            return inputDoc.CreateQuery();
         }
-        #endregion
+
+        #endregion Document操作
 
         #region Service操作封装
+
         /// <summary>
         /// 执行service的setExecute
         /// </summary>
@@ -182,6 +183,7 @@ namespace InSiteXMLClient
         {
             _service.SetExecute();
         }
+
         /// <summary>
         /// 执行service的setExecute，并提交文档到服务器，获取返回结果和信息
         /// </summary>
@@ -193,8 +195,8 @@ namespace InSiteXMLClient
             RequestData().RequestField("CompletionMsg");
             var responseDocument = Submit();
             return !responseDocument.CheckErrors();
-
         }
+
         /// <summary>
         /// 执行service的setExecute，并提交文档到服务器，获取返回结果信息
         /// </summary>
@@ -217,16 +219,14 @@ namespace InSiteXMLClient
                                     this._document.ResponseData()?.GetOwnerDocument()?.AsXml());
                 ;
             }
-
-
-
         }
+
         /// <summary>
         /// 执行service的setExecute，并提交文档到服务器，获取返回需要返回的字段结果信息
         /// </summary>
         /// <param name="requestFields">返回的字段 多节点用.分隔</param>
         /// <returns></returns>
-        public (bool Status, string Message,ICsiDocument Document) ExecuteResult(IEnumerable<string> requestFields)
+        public (bool Status, string Message, ICsiDocument Document) ExecuteResult(IEnumerable<string> requestFields)
         {
             try
             {
@@ -241,7 +241,7 @@ namespace InSiteXMLClient
                 var b = false;
                 var msg = "";
                 b = !responseDocument.CheckErrors(s => msg = s);
-                return (Status: b, Message: msg,responseDocument);
+                return (Status: b, Message: msg, responseDocument);
             }
             catch (Exception e)
             {
@@ -249,10 +249,8 @@ namespace InSiteXMLClient
                                     this._document.ResponseData()?.GetOwnerDocument()?.AsXml());
                 ;
             }
-
-
-
         }
+
         /// <summary>
         /// 指定service执行的事件
         /// </summary>
@@ -273,16 +271,15 @@ namespace InSiteXMLClient
 
                 case PerformType.Delete:
                     return _service.Perform("delete");
+
                 case PerformType.NewRev:
                     return _service.Perform("NewRev");
 
                 default:
                     return null;
             }
-
-
-
         }
+
         /// <summary>
         /// 执行事件
         /// </summary>
@@ -292,6 +289,7 @@ namespace InSiteXMLClient
         {
             return _service.Perform(evenName);
         }
+
         /// <summary>
         /// 返回service的requestData
         /// </summary>
@@ -300,6 +298,7 @@ namespace InSiteXMLClient
         {
             return _service.RequestData();
         }
+
         /// <summary>
         /// 创建InputData
         /// </summary>
@@ -308,6 +307,7 @@ namespace InSiteXMLClient
         {
             return _service.InputData();
         }
+
         /// <summary>
         /// 创建服务，默认文档名称为服务名加Doc
         /// </summary>
@@ -316,6 +316,7 @@ namespace InSiteXMLClient
         {
             CreateDocumentAndService(serviceName + "Doc", serviceName);
         }
+
         /// <summary>
         /// 更改命名对象
         /// </summary>
@@ -328,6 +329,7 @@ namespace InSiteXMLClient
             this.Perform(PerformType.Load);
             return this.InputData().NamedObjectField("ObjectChanges");
         }
+
         /// <summary>
         /// 删除命名对象
         /// </summary>
@@ -340,6 +342,7 @@ namespace InSiteXMLClient
             this.Perform(PerformType.Delete);
             return this.ExecuteResult();
         }
+
         /// <summary>
         /// 更改版本对象
         /// </summary>
@@ -353,6 +356,7 @@ namespace InSiteXMLClient
             this.Perform(PerformType.Load);
             return this.InputData().RevisionedObjectField("ObjectChanges");
         }
+
         /// <summary>
         /// 删除版本对象
         /// </summary>
@@ -366,6 +370,7 @@ namespace InSiteXMLClient
             this.Perform(PerformType.Delete);
             return this.ExecuteResult();
         }
+
         /// <summary>
         /// 新建ObjectChanges对象
         /// </summary>
@@ -378,6 +383,7 @@ namespace InSiteXMLClient
             objectChanges.DataField("Name").SetValue(name);
             return objectChanges;
         }
+
         /// <summary>
         /// 新建ObjectChanges对象
         /// </summary>
@@ -393,6 +399,7 @@ namespace InSiteXMLClient
             objectChanges.DataField("IsRevofRcd").SetValue(useRor);
             return objectChanges;
         }
+
         /// <summary>
         /// 执行sql 参数名在SQL语句中中以?开头
         /// </summary>
@@ -405,10 +412,11 @@ namespace InSiteXMLClient
 
             var query = inputDoc.CreateQuery();
             query.SetSqlText(sql);
-            foreach (var pa in parameter?.Keys)
-            {
-                query.SetParameter(pa, parameter[pa]);
-            }
+            if (parameter != null)
+                foreach (var pa in parameter?.Keys)
+                {
+                    query.SetParameter(pa, parameter[pa]);
+                }
             var responseDoc = inputDoc.Submit();
 
             if (null != responseDoc)
@@ -419,30 +427,28 @@ namespace InSiteXMLClient
                     var recordset = query.GetRecordset();
                     if (null != recordset)
                     {
-                        var data = new DataTable();
-                        for (var i = 0; i < recordset.GetRecordCount(); i++)
-                        {
-                            recordset.MoveNext();
-                            var arrOfQueryFields = recordset.GetFields();
-                            var values = new List<string>();
-                            foreach (CsiRecordsetField recordSetField in arrOfQueryFields)
-                            {
-                                if (i == 0)
-                                {
-                                    data.Columns.Add(recordSetField.GetName());
-                                }
-                                values.Add(recordSetField.GetValue());
-                            }
+                        return recordset.GetAsDataTable();
+                        //var data = new DataTable();
+                        //for (var i = 0; i < recordset.GetRecordCount(); i++)
+                        //{
+                        //    recordset.MoveNext();
+                        //    var arrOfQueryFields = recordset.GetFields();
+                        //    var values = new List<string>();
+                        //    foreach (CsiRecordsetField recordSetField in arrOfQueryFields)
+                        //    {
+                        //        if (i == 0)
+                        //        {
+                        //            data.Columns.Add(recordSetField.GetName());
+                        //        }
+                        //        values.Add(recordSetField.GetValue());
+                        //    }
 
-                            data.Rows.Add(values.ToArray());
+                        //    data.Rows.Add(values.ToArray());
+                        //}
 
-                        }
-
-                        return data;
+                        //return data;
                     }
                 }
-
-
             }
 
             return null;
@@ -455,18 +461,19 @@ namespace InSiteXMLClient
         /// <param name="sql"></param>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public IEnumerable<T> Query<T>(string sql,Dictionary<string,string>  parameter=null)
+        public IEnumerable<T> Query<T>(string sql, Dictionary<string, string> parameter = null)
         {
             try
             {
                 var inputDoc = this._session.CreateDocument("AdHocQuery");
                 var query = inputDoc.CreateQuery();
                 query.SetSqlText(sql);
-                foreach (var pa in parameter?.Keys)
-                {
-                    query.SetParameter(pa, parameter[pa]);
-                }
-               
+                if (parameter != null)
+                    foreach (var pa in parameter?.Keys)
+                    {
+                        query.SetParameter(pa, parameter[pa]);
+                    }
+
                 var properties = typeof(T).GetProperties();
 
                 var responseDoc = inputDoc.Submit();
@@ -497,25 +504,32 @@ namespace InSiteXMLClient
                                             case "Int16":
                                                 p.SetValue(model, int.Parse(string.IsNullOrEmpty(v) ? "0" : v));
                                                 break;
+
                                             case "Int64":
                                                 p.SetValue(model, long.Parse(string.IsNullOrEmpty(v) ? "0" : v));
                                                 break;
+
                                             case "Double":
                                             case "Float":
                                                 p.SetValue(model, long.Parse(string.IsNullOrEmpty(v) ? "0" : v));
                                                 break;
+
                                             case "Boolean":
                                                 p.SetValue(model, bool.Parse(string.IsNullOrEmpty(v) ? "0" : v));
                                                 break;
+
                                             case "String":
                                                 p.SetValue(model, recordSetField.GetValue());
                                                 break;
+
                                             case "DateTime":
                                                 p.SetValue(model, DateTime.Parse(string.IsNullOrEmpty(v) ? DateTime.MinValue.ToString() : v));
                                                 break;
+
                                             case "Decimal":
                                                 p.SetValue(model, Decimal.Parse(string.IsNullOrEmpty(v) ? "0" : v));
                                                 break;
+
                                             default:
                                                 p.SetValue(model, null);
                                                 break;
@@ -523,23 +537,17 @@ namespace InSiteXMLClient
                                         // p.SetValue(model, recordSetField.GetValue());
                                         x++;
                                     }
-
                                 }
 
                                 if (x > 0)
                                 {
                                     data.Add((T)model);
                                 }
-
-
-
                             }
 
                             return data;
                         }
                     }
-
-
                 }
             }
             catch (Exception e)
@@ -547,11 +555,11 @@ namespace InSiteXMLClient
                 Console.WriteLine(e);
                 throw;
             }
-            
 
             return null;
         }
-        #endregion 
+
+        #endregion Service操作封装
 
         public enum PerformType
         {
@@ -559,26 +567,27 @@ namespace InSiteXMLClient
             /// 载入
             /// </summary>
             Load,
+
             /// <summary>
             /// 新建
             /// </summary>
             New,
+
             /// <summary>
             /// 修改
             /// </summary>
             Change,
+
             /// <summary>
             /// 删除
             /// </summary>
             Delete,
+
             /// <summary>
             /// 添加新版本
             /// </summary>
             NewRev
-
         }
-
-
     }
 
     /// <summary>
@@ -597,7 +606,7 @@ namespace InSiteXMLClient
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="doc"></param>
         /// <param name="isInput"></param>
@@ -613,8 +622,8 @@ namespace InSiteXMLClient
                 writer.Close();
                 fs.Close();
             }
-
         }
+
         /// <summary>
         /// 检查错误，并返回错误信息,存在错误返回true
         /// </summary>
@@ -645,6 +654,7 @@ namespace InSiteXMLClient
                 return false;
             }
         }
+
         /// <summary>
         /// 检查文档错误，并处理错误信息,存在错误返回true
         /// </summary>
@@ -657,8 +667,8 @@ namespace InSiteXMLClient
             bool result = document.CheckErrors(ref msg);
             action(msg);
             return result;
-
         }
+
         /// <summary>
         /// 赋值
         /// </summary>
@@ -666,7 +676,6 @@ namespace InSiteXMLClient
         /// <param name="value"></param>
         public static void SetValue(this ICsiDataField csiDataField, object value)
         {
-
             if (value is bool b)
             {
                 csiDataField.SetValue(b ? 1 : 0);
@@ -681,7 +690,152 @@ namespace InSiteXMLClient
             }
         }
 
+        /// <summary>
+        /// 执行sql 参数名在SQL语句中中以?开头
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public static DataTable ExecuteTable(this ICsiQuery query, Dictionary<string, string> parameter = null)
+        {
+            if (parameter != null)
+                foreach (var pa in parameter.Keys)
+                {
+                    query.SetParameter(pa, parameter[pa]);
+                }
+            var responseDoc = query.GetOwnerDocument().Submit();
 
+            if (null != responseDoc)
+            {
+                query = responseDoc.GetQuery();
+                if (null != query)
+                {
+                    var recordset = query.GetRecordset();
+                   return recordset.GetAsDataTable();
+                    //if (null != recordset)
+                    //{
+                    //    var data = new DataTable();
+                    //    for (var i = 0; i < recordset.GetRecordCount(); i++)
+                    //    {
+                    //        recordset.MoveNext();
+                    //        var arrOfQueryFields = recordset.GetFields();
+                    //        var values = new List<string>();
+                    //        foreach (CsiRecordsetField recordSetField in arrOfQueryFields)
+                    //        {
+                    //            if (i == 0)
+                    //            {
+                    //                data.Columns.Add(recordSetField.GetName());
+                    //            }
+                    //            values.Add(recordSetField.GetValue());
+                    //        }
 
+                    //        data.Rows.Add(values.ToArray());
+                    //    }
+
+                    //    return data;
+                    //}
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取Model 参数名在SQL语句中中以?开头
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Execute<T>(this ICsiQuery query, Dictionary<string, string> parameter = null)
+        {
+            try
+            {
+                if (parameter != null)
+                    foreach (var pa in parameter?.Keys)
+                    {
+                        query.SetParameter(pa, parameter[pa]);
+                    }
+                var properties = typeof(T).GetProperties();
+                var responseDoc = query.GetOwnerDocument().Submit();
+                if (null != responseDoc)
+                {
+                    query = responseDoc.GetQuery();
+                    if (null != query)
+                    {
+                        var recordset = query.GetRecordset();
+                        if (null != recordset)
+                        {
+                            var data = new List<T>();
+                            for (var i = 0; i < recordset.GetRecordCount(); i++)
+                            {
+                                recordset.MoveNext();
+                                var arrOfQueryFields = recordset.GetFields();
+                                var model = Activator.CreateInstance(typeof(T));
+                                int x = 0;
+                                foreach (CsiRecordsetField recordSetField in arrOfQueryFields)
+                                {
+                                    var p = properties.FirstOrDefault(m => m.Name.ToLower() == recordSetField.GetName().ToLower());
+                                    var v = recordSetField.GetValue();
+                                    if (p != null)
+                                    {
+                                        switch (p.PropertyType.Name)
+                                        {
+                                            case "Int32":
+                                            case "Int16":
+                                                p.SetValue(model, int.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+
+                                            case "Int64":
+                                                p.SetValue(model, long.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+
+                                            case "Double":
+                                            case "Float":
+                                                p.SetValue(model, long.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+
+                                            case "Boolean":
+                                                p.SetValue(model, bool.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+
+                                            case "String":
+                                                p.SetValue(model, recordSetField.GetValue());
+                                                break;
+
+                                            case "DateTime":
+                                                p.SetValue(model, DateTime.Parse(string.IsNullOrEmpty(v) ? DateTime.MinValue.ToString() : v));
+                                                break;
+
+                                            case "Decimal":
+                                                p.SetValue(model, Decimal.Parse(string.IsNullOrEmpty(v) ? "0" : v));
+                                                break;
+
+                                            default:
+                                                p.SetValue(model, null);
+                                                break;
+                                        }
+                                        // p.SetValue(model, recordSetField.GetValue());
+                                        x++;
+                                    }
+                                }
+
+                                if (x > 0)
+                                {
+                                    data.Add((T)model);
+                                }
+                            }
+
+                            return data;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return null;
+        }
     }
 }

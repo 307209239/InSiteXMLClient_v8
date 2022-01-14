@@ -14,7 +14,7 @@
 
     ICsiExceptionData ExceptionData();
 
-    void SetUserQueryName(string queryName, long changeCount);
+    void SetUserQueryName(string queryName, long changeCount=0);
 
     ICsiQueryParameters GetQueryParameters();
 

@@ -1,19 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiRecordset : ICsiXmlElement
-  {
-    long GetRecordCount();
+    public interface ICsiRecordset : ICsiXmlElement
+    {
+        long GetRecordCount();
 
-    Array GetFields();
+        IEnumerable<ICsiRecordsetField> GetFields();
 
-    void MoveFirst();
+        void MoveFirst();
 
-    void MoveLast();
+        void MoveLast();
 
-    void MoveNext();
+        bool MoveNext();
 
-    void MovePrevious();
-  }
+        void MovePrevious();
+
+        System.Data.DataTable GetAsDataTable();
+    }
 }
