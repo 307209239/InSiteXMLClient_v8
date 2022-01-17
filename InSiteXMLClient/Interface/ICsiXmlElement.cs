@@ -1,103 +1,101 @@
-﻿using System;
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiXmlElement
-  {
-    ICsiDocument GetOwnerDocument();
+    public interface ICsiXmlElement
+    {
+        ICsiDocument GetOwnerDocument();
 
-    ICsiXmlElement GetParentElement();
+        ICsiXmlElement GetParentElement();
 
-    bool IsField();
+        bool IsField();
 
-    bool IsObject();
+        bool IsObject();
 
-    bool IsContainer();
+        bool IsContainer();
 
-    bool IsList();
+        bool IsList();
 
-    bool IsNamedObject();
+        bool IsNamedObject();
 
-    bool IsService();
+        bool IsService();
 
-    bool IsRevisionedObject();
+        bool IsRevisionedObject();
 
-    bool IsRequestData();
+        bool IsRequestData();
 
-    bool IsDataField();
+        bool IsDataField();
 
-    bool IsSubentity();
+        bool IsSubentity();
 
-    bool IsDataList();
+        bool IsDataList();
 
-    bool IsContainerList();
+        bool IsContainerList();
 
-    bool IsNamedObjectList();
+        bool IsNamedObjectList();
 
-    bool IsRevisionedObjectList();
+        bool IsRevisionedObjectList();
 
-    bool IsSubentityList();
+        bool IsSubentityList();
 
-    bool IsNamedSubentityList();
+        bool IsNamedSubentityList();
 
-    bool IsNamedSubentity();
+        bool IsNamedSubentity();
 
-    bool IsObjectList();
+        bool IsObjectList();
 
-    Array GetAllChildren();
+        ICsiXmlElement[] GetAllChildren();
 
-    string GetElementName();
+        string GetElementName();
 
-    void RemoveAllChildren();
+        void RemoveAllChildren();
 
-    ICsiXmlElement FindChildByName(string name);
+        ICsiXmlElement FindChildByName(string name);
 
-    ICsiXmlElement AppendChild(ICsiXmlElement child);
+        ICsiXmlElement AppendChild(ICsiXmlElement child);
 
-    ICsiXmlElement RemoveChild(ICsiXmlElement child);
+        ICsiXmlElement RemoveChild(ICsiXmlElement child);
 
-    ICsiField AsField();
+        ICsiField AsField();
 
-    ICsiDataField AsDataField();
+        ICsiDataField AsDataField();
 
-    ICsiList AsList();
+        ICsiList AsList();
 
-    ICsiObject AsObject();
+        ICsiObject AsObject();
 
-    ICsiService AsService();
+        ICsiService AsService();
 
-    ICsiContainer AsContainer();
+        ICsiContainer AsContainer();
 
-    ICsiRevisionedObject AsRevisionedObject();
+        ICsiRevisionedObject AsRevisionedObject();
 
-    ICsiNamedObject AsNamedObject();
+        ICsiNamedObject AsNamedObject();
 
-    ICsiSubentity AsSubentity();
+        ICsiSubentity AsSubentity();
 
-    ICsiRequestData AsRequestData();
+        ICsiRequestData AsRequestData();
 
-    ICsiDataList AsDataList();
+        ICsiDataList AsDataList();
 
-    ICsiContainerList AsContainerList();
+        ICsiContainerList AsContainerList();
 
-    ICsiNamedObjectList AsNamedObjectList();
+        ICsiNamedObjectList AsNamedObjectList();
 
-    ICsiSubentityList AsSubentityList();
+        ICsiSubentityList AsSubentityList();
 
-    ICsiRevisionedObjectList AsRevisionedObjectList();
+        ICsiRevisionedObjectList AsRevisionedObjectList();
 
-    ICsiObjectList AsObjectList();
+        ICsiObjectList AsObjectList();
 
-    ICsiNamedSubentityList AsNamedSubentityList();
+        ICsiNamedSubentityList AsNamedSubentityList();
 
-    ICsiNamedSubentity AsNamedSubentity();
+        ICsiNamedSubentity AsNamedSubentity();
 
-    Array GetChildrenByName(string name);
+        ICsiXmlElement[] GetChildrenByName(string name);
 
-    bool HasChildren();
+        bool HasChildren();
 
-    void SetAttribute(string name, string val);
+        void SetAttribute(string name, string val);
 
-    string GetAttribute(string name);
-  }
+        string GetAttribute(string name);
+    }
 }

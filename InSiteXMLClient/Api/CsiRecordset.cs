@@ -1,9 +1,7 @@
 ﻿using Camstar.XMLClient.Interface;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Xml;
 
@@ -56,7 +54,6 @@ namespace Camstar.XMLClient.API
                 if (this.mCurrentElement == null)
                 {
                     this.MoveFirst();
-                   
                 }
                 else
                 {
@@ -74,7 +71,6 @@ namespace Camstar.XMLClient.API
                             this.MoveLast();
                             return false;
                         }
-                            
                     }
                 }
                 return true;
@@ -154,13 +150,12 @@ namespace Camstar.XMLClient.API
 
         public System.Data.DataTable GetAsDataTable()
         {
-           
             try
             {
                 this.MoveFirst();
-                var fs= this.GetFields();
+                var fs = this.GetFields();
                 DataTable dt = new DataTable();
-                dt.Columns.AddRange((from f in fs select new DataColumn( f.GetName())).ToArray());
+                dt.Columns.AddRange((from f in fs select new DataColumn(f.GetName())).ToArray());
                 dt.Rows.Add((from f in fs select f.GetValue()).ToArray());
                 while (this.MoveNext())
                 {
@@ -170,7 +165,6 @@ namespace Camstar.XMLClient.API
             }
             catch (System.Exception ex)
             {
-                
                 throw ex;
             }
         }

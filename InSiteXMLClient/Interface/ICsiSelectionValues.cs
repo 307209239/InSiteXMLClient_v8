@@ -2,10 +2,10 @@
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiSelectionValues : ICsiXmlElement
-  {
-    Array GetAllSelectionValues();
+    public interface ICsiSelectionValues : ICsiXmlElement
+    {
+        Array GetAllSelectionValues();
 
-    ICsiSelectionValue GetSelectionValueByName(string name);
-  }
+        ICsiSelectionValue GetSelectionValueByName(string name);
+    }
 }

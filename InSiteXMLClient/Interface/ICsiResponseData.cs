@@ -1,14 +1,13 @@
-﻿
-using System;
+﻿using System;
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiResponseData : ICsiXmlElement
-  {
-    Array GetResponseFields();
+    public interface ICsiResponseData : ICsiXmlElement
+    {
+        Array GetResponseFields();
 
-    ICsiSubentity GetSessionValues();
+        ICsiSubentity GetSessionValues();
 
-    ICsiField GetResponseFieldByName(string fieldName);
-  }
+        ICsiField GetResponseFieldByName(string fieldName);
+    }
 }

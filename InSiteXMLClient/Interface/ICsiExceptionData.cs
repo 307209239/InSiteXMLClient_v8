@@ -2,22 +2,22 @@
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiExceptionData : ICsiXmlElement
-  {
-    int GetErrorCode();
+    public interface ICsiExceptionData : ICsiXmlElement
+    {
+        int GetErrorCode();
 
-    string GetDescription();
+        string GetDescription();
 
-    string GetSource();
+        string GetSource();
 
-    string GetSystemMessage();
+        string GetSystemMessage();
 
-    int GetSeverity();
+        int GetSeverity();
 
-    string GetFailureContext();
+        string GetFailureContext();
 
-    XmlNodeList GetExceptionParameters();
+        XmlNodeList GetExceptionParameters();
 
-    string GetExceptionParameter(string tagName);
-  }
+        string GetExceptionParameter(string tagName);
+    }
 }

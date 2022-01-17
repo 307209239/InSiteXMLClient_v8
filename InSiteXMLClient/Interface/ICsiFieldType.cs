@@ -1,17 +1,15 @@
-﻿
-
-using Camstar.XMLClient.Enum;
+﻿using Camstar.XMLClient.Enum;
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiFieldType : ICsiXmlElement
-  {
-    CsiGenericTypes GetGenericType();
+    public interface ICsiFieldType : ICsiXmlElement
+    {
+        CsiGenericTypes GetGenericType();
 
-    string GetSpecificType();
+        string GetSpecificType();
 
-    CsiReferenceTypes GetReferenceType();
+        CsiReferenceTypes GetReferenceType();
 
-    string GetNodeType();
-  }
+        string GetNodeType();
+    }
 }

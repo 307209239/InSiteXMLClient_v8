@@ -1,10 +1,9 @@
-﻿
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiRecordsetField : ICsiXmlElement
-  {
-    string GetName();
+    public interface ICsiRecordsetField : ICsiXmlElement
+    {
+        string GetName();
 
-    string GetValue();
-  }
+        string GetValue();
+    }
 }

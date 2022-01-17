@@ -2,50 +2,50 @@
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiObject : ICsiField, ICsiXmlElement
-  {
-    string GetObjectId();
+    public interface ICsiObject : ICsiField, ICsiXmlElement
+    {
+        string GetObjectId();
 
-    void SetObjectId(string Id);
+        void SetObjectId(string Id);
 
-    string GetObjectType();
+        string GetObjectType();
 
-    void SetObjectType(string CDOType);
+        void SetObjectType(string CDOType);
 
-    Array GetUserDefinedFields();
+        ICsiXmlElement[] GetUserDefinedFields();
 
-    ICsiPerform Perform(string eventName);
+        ICsiPerform Perform(string eventName);
 
-    ICsiDataField DataField(string fieldName);
+        ICsiDataField DataField(string fieldName);
 
-    ICsiNamedObject NamedObjectField(string fieldName);
+        ICsiNamedObject NamedObjectField(string fieldName);
 
-    ICsiRevisionedObject RevisionedObjectField(string fieldName);
+        ICsiRevisionedObject RevisionedObjectField(string fieldName);
 
-    ICsiField GetField(string fieldName);
+        ICsiField GetField(string fieldName);
 
-    ICsiDataList DataList(string fieldName);
+        ICsiDataList DataList(string fieldName);
 
-    ICsiContainerList ContainerList(string fieldName);
+        ICsiContainerList ContainerList(string fieldName);
 
-    ICsiSubentityList SubentityList(string fieldName);
+        ICsiSubentityList SubentityList(string fieldName);
 
-    ICsiNamedObjectList NamedObjectList(string fieldName);
+        ICsiNamedObjectList NamedObjectList(string fieldName);
 
-    ICsiRevisionedObjectList RevisionedObjectList(string fieldName);
+        ICsiRevisionedObjectList RevisionedObjectList(string fieldName);
 
-    ICsiNamedSubentityList NamedSubentityList(string fieldName);
+        ICsiNamedSubentityList NamedSubentityList(string fieldName);
 
-    ICsiSubentity SubentityField(string fieldName);
+        ICsiSubentity SubentityField(string fieldName);
 
-    ICsiContainer ContainerField(string fieldName);
+        ICsiContainer ContainerField(string fieldName);
 
-    ICsiNamedSubentity NamedSubentityField(string fieldName);
+        ICsiNamedSubentity NamedSubentityField(string fieldName);
 
-    void CreateObject(string CDOType);
+        void CreateObject(string CDOType);
 
-    ICsiObject ObjectField(string fieldName);
+        ICsiObject ObjectField(string fieldName);
 
-    ICsiObjectList ObjectList(string fieldName);
-  }
+        ICsiObjectList ObjectList(string fieldName);
+    }
 }

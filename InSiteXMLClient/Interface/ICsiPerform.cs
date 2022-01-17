@@ -1,7 +1,7 @@
 ﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiPerform : ICsiXmlElement
-  {
-    ICsiParameters AddParameters();
-  }
+    public interface ICsiPerform : ICsiXmlElement
+    {
+        ICsiParameters AddParameters();
+    }
 }

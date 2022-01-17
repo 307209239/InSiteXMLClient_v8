@@ -1,17 +1,15 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiNamedSubentity : ICsiObject, ICsiField, ICsiXmlElement
-  {
-    string GetName();
+    public interface ICsiNamedSubentity : ICsiObject, ICsiField, ICsiXmlElement
+    {
+        string GetName();
 
-    void SetName(string name);
+        void SetName(string name);
 
-    ICsiParentInfo GetParentInfo();
+        ICsiParentInfo GetParentInfo();
 
-    void SetParentId(string Id);
+        void SetParentId(string Id);
 
-    ICsiParentInfo ParentInfo();
-  }
+        ICsiParentInfo ParentInfo();
+    }
 }

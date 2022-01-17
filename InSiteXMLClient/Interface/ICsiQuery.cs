@@ -1,47 +1,47 @@
 ﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiQuery : ICsiXmlElement
-  {
-    ICsiRecordset GetRecordset();
+    public interface ICsiQuery : ICsiXmlElement
+    {
+        ICsiRecordset GetRecordset();
 
-    long GetRowsetSize();
+        long GetRowsetSize();
 
-    string GetSqlText();
+        string GetSqlText();
 
-    long GetStartRow();
+        long GetStartRow();
 
-    string GetQueryName();
+        string GetQueryName();
 
-    ICsiExceptionData ExceptionData();
+        ICsiExceptionData ExceptionData();
 
-    void SetUserQueryName(string queryName, long changeCount=0);
+        void SetUserQueryName(string queryName, long changeCount = 0);
 
-    ICsiQueryParameters GetQueryParameters();
+        ICsiQueryParameters GetQueryParameters();
 
-    void SetRowsetSize(long size);
+        void SetRowsetSize(long size);
 
-    void SetSqlText(string sql);
+        void SetSqlText(string sql);
 
-    void SetStartRow(long startRow);
+        void SetStartRow(long startRow);
 
-    void SetQueryName(string queryName);
+        void SetQueryName(string queryName);
 
-    void ClearParameters();
+        void ClearParameters();
 
-    void SetParameter(string name, string value);
+        void SetParameter(string name, string value);
 
-    string GetParameter(string name);
+        string GetParameter(string name);
 
-    ICsiRecordsetHeader GetRecordsetHeader();
+        ICsiRecordsetHeader GetRecordsetHeader();
 
-    long GetUserQueryChangeCount();
+        long GetUserQueryChangeCount();
 
-    bool GetRequestRecordCount();
+        bool GetRequestRecordCount();
 
-    void SetRequestRecordCount(bool isRequested);
+        void SetRequestRecordCount(bool isRequested);
 
-    long GetRecordCount();
+        long GetRecordCount();
 
-    void SetCdoTypeId(int typeId);
-  }
+        void SetCdoTypeId(int typeId);
+    }
 }

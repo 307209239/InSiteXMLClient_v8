@@ -1,6 +1,6 @@
 ﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiQueryParameters : ICsiParameters, ICsiXmlElement
-  {
-  }
+    public interface ICsiQueryParameters : ICsiParameters, ICsiXmlElement
+    {
+    }
 }

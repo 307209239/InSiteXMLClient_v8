@@ -1,6 +1,5 @@
 ﻿using Camstar.Util;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -19,6 +18,7 @@ namespace Camstar.Utility
         private NetworkStream _Stream = (NetworkStream)null;
         private string _InboundXML = string.Empty;
         private string _InboundXMLFile = string.Empty;
+
         ~ServerConnection() => this.Disconnect();
 
         public virtual string Host
@@ -116,25 +116,30 @@ namespace Camstar.Utility
                     case 80:
                         this.Settings.Protocol = ApplicationProtocol.Http;
                         break;
+
                     case 443:
-                        
+
                         this.Settings.Protocol = ApplicationProtocol.Https;
                         break;
+
                     case 2150:
                         this.Settings.Protocol = ApplicationProtocol.InSiteSockets;
                         break;
+
                     case 2881:
                         this.Settings.Protocol = ApplicationProtocol.InSiteSockets;
                         break;
+
                     case 8080:
                         this.Settings.Protocol = ApplicationProtocol.Http;
                         break;
+
                     default:
                         this.Settings.Protocol = ApplicationProtocol.Https;
                         break;
                 }
             }
-            if (!this.Settings.Protocol.Equals((object)ApplicationProtocol.InSiteSockets))
+            if (!this.Settings.Protocol.Equals(ApplicationProtocol.InSiteSockets))
                 return true;
             bool flag;
             try
@@ -143,7 +148,7 @@ namespace Camstar.Utility
                 this._TcpClient.ReceiveBufferSize = 75000;
                 this._TcpClient.SendTimeout = this.Settings.SendTimeout;
                 this._TcpClient.ReceiveTimeout = this.Settings.ReceiveTimeout;
-               
+
                 this._TcpClient.Connect(this.Settings.Host, this.Settings.Port);
                 this._Stream = this._TcpClient.GetStream();
                 flag = true;
@@ -151,7 +156,7 @@ namespace Camstar.Utility
             catch (SocketException ex)
             {
                 this._TcpClient = (TcpClient)null;
-               
+
                 throw ex;
             }
             return flag;
@@ -192,7 +197,6 @@ namespace Camstar.Utility
                 }
                 catch (Exception ex)
                 {
-                    
                     throw ex;
                 }
             }
@@ -220,25 +224,23 @@ namespace Camstar.Utility
                 }
                 catch (IOException ex)
                 {
-                   
                     if (this.Settings.LogXml)
                         this.LogDocument("XmlResponse", outputXML);
                     throw ex;
                 }
                 catch (Exception ex)
                 {
-                  
                     throw ex;
                 }
             }
             return flag;
         }
 
-        public virtual string Submit(string host, int port) => this.Submit(host, port, (string)null, (string)null, this.Settings.LogXml, (string)null);
+        public virtual string Submit(string host, int port) => this.Submit(host, port, null, null, this.Settings.LogXml, null);
 
-        public virtual string Submit(string host, int port, string inboundXML) => this.Submit(host, port, inboundXML, (string)null, this.Settings.LogXml, (string)null);
+        public virtual string Submit(string host, int port, string inboundXML) => this.Submit(host, port, inboundXML, null, this.Settings.LogXml, null);
 
-        public virtual string Submit(string host, int port, string inboundXML, bool logXML) => this.Submit(host, port, inboundXML, (string)null, logXML, (string)null);
+        public virtual string Submit(string host, int port, string inboundXML, bool logXML) => this.Submit(host, port, inboundXML, null, logXML, null);
 
         public virtual string Submit(
           string host,
@@ -247,7 +249,7 @@ namespace Camstar.Utility
           bool logXML,
           string xmlLogPath)
         {
-            return this.Submit(host, port, inboundXML, (string)null, logXML, xmlLogPath);
+            return this.Submit(host, port, inboundXML, null, logXML, xmlLogPath);
         }
 
         public virtual string Submit(
@@ -256,7 +258,7 @@ namespace Camstar.Utility
           string inboundXML,
           string inboundXMLFilePath)
         {
-            return this.Submit(host, port, inboundXML, inboundXMLFilePath, this.Settings.LogXml, (string)null);
+            return this.Submit(host, port, inboundXML, inboundXMLFilePath, this.Settings.LogXml, null);
         }
 
         public virtual string Submit(
@@ -266,7 +268,7 @@ namespace Camstar.Utility
           string inboundXMLFilePath,
           bool logXML)
         {
-            return this.Submit(host, port, inboundXML, inboundXMLFilePath, logXML, (string)null);
+            return this.Submit(host, port, inboundXML, inboundXMLFilePath, logXML, null);
         }
 
         public virtual string Submit(
@@ -291,15 +293,15 @@ namespace Camstar.Utility
             return this.Submit();
         }
 
-        public virtual string Submit(string host) => this.Submit(host, -1, (string)null, (string)null, this.Settings.LogXml, (string)null);
+        public virtual string Submit(string host) => this.Submit(host, -1, null, null, this.Settings.LogXml, null);
 
-        public virtual string Submit(string host, string inboundXML) => this.Submit(host, -1, inboundXML, (string)null, this.Settings.LogXml, (string)null);
+        public virtual string Submit(string host, string inboundXML) => this.Submit(host, -1, inboundXML, null, this.Settings.LogXml, null);
 
-        public virtual string Submit(string host, string inboundXML, bool logXML) => this.Submit(host, -1, inboundXML, (string)null, logXML, (string)null);
+        public virtual string Submit(string host, string inboundXML, bool logXML) => this.Submit(host, -1, inboundXML, null, logXML, null);
 
-        public virtual string Submit(string host, string inboundXML, bool logXML, string xmlLogPath) => this.Submit(host, -1, inboundXML, (string)null, logXML, xmlLogPath);
+        public virtual string Submit(string host, string inboundXML, bool logXML, string xmlLogPath) => this.Submit(host, -1, inboundXML, null, logXML, xmlLogPath);
 
-        public virtual string Submit(string host, string inboundXML, string inboundXMLFilePath) => this.Submit(host, -1, inboundXML, inboundXMLFilePath, this.Settings.LogXml, (string)null);
+        public virtual string Submit(string host, string inboundXML, string inboundXMLFilePath) => this.Submit(host, -1, inboundXML, inboundXMLFilePath, this.Settings.LogXml, null);
 
         public virtual string Submit(
           string host,
@@ -307,7 +309,7 @@ namespace Camstar.Utility
           string inboundXMLFilePath,
           bool logXML)
         {
-            return this.Submit(host, -1, inboundXML, inboundXMLFilePath, logXML, (string)null);
+            return this.Submit(host, -1, inboundXML, inboundXMLFilePath, logXML, null);
         }
 
         public virtual string Submit(
@@ -334,9 +336,11 @@ namespace Camstar.Utility
                             case ApplicationProtocol.Http:
                                 outputXML = this.SendReceivetHttp();
                                 break;
+
                             case ApplicationProtocol.Https:
                                 outputXML = this.SendReceivetHttp();
                                 break;
+
                             default:
                                 if (this.Send())
                                 {
@@ -349,7 +353,6 @@ namespace Camstar.Utility
                 }
                 catch (Exception ex)
                 {
-                    
                     throw ex;
                 }
                 finally
@@ -406,7 +409,6 @@ namespace Camstar.Utility
             }
             catch (IOException ex)
             {
-                
                 empty.TrimEnd(new char[1]);
                 throw ex;
             }
@@ -490,9 +492,6 @@ namespace Camstar.Utility
             return document;
         }
 
-     
-      
-
         protected virtual bool CheckLogPath(string path)
         {
             bool flag = false;
@@ -502,9 +501,8 @@ namespace Camstar.Utility
                     Directory.CreateDirectory(path);
                 flag = true;
             }
-            catch (Exception ex)
+            catch 
             {
-               
             }
             return flag;
         }
@@ -520,9 +518,8 @@ namespace Camstar.Utility
             {
                 stringBuilder.Append(Thread.CurrentThread.ExecutionContext.GetHashCode().ToString("d2"));
             }
-            catch (Exception ex)
+            catch 
             {
-                
             }
             stringBuilder.Append('_');
             stringBuilder.Append(suffix);
@@ -586,7 +583,7 @@ namespace Camstar.Utility
                     {
                         if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "__InSite")
                         {
-                            string str2 = (string)null;
+                            string str2 = null;
                             xmlWriter.WriteStartElement(reader.LocalName);
                             for (bool flag2 = reader.MoveToFirstAttribute(); flag2; flag2 = reader.MoveToNextAttribute())
                             {
@@ -638,10 +635,9 @@ namespace Camstar.Utility
                     str1 = sb.ToString();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 str1 = document;
-                
             }
             finally
             {
@@ -664,20 +660,15 @@ namespace Camstar.Utility
                 streamWriter.WriteLine(this.MaskPassword(document1));
                 streamWriter.Close();
             }
-            catch (Exception ex)
+            catch 
             {
-                
             }
         }
 
-        private bool RemoteCertificateValidationCallback(
-          object sender,
-          X509Certificate cert,
-          X509Chain chain,
-          SslPolicyErrors errors)
+        private bool RemoteCertificateValidationCallback(object sender,X509Certificate cert,X509Chain chain,SslPolicyErrors errors)
         {
             return true;
-            return (uint)errors <= 0U || (this.Settings.IgnoreInvalidCert || this.IsHostLocalMachine(this.Settings.Host));
+            //return (uint)errors <= 0U || (this.Settings.IgnoreInvalidCert || this.IsHostLocalMachine(this.Settings.Host));
         }
 
         private bool IsHostLocalMachine(string hostName)

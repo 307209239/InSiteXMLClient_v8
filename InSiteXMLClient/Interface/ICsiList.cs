@@ -1,16 +1,16 @@
-﻿using System;
-using Camstar.XMLClient.Enum;
+﻿using Camstar.XMLClient.Enum;
+using System;
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiList : ICsiField, ICsiXmlElement
-  {
-    void SetListAction(ListActions action);
+    public interface ICsiList : ICsiField, ICsiXmlElement
+    {
+        void SetListAction(ListActions action);
 
-    Array GetListItems();
+        ICsiXmlElement[] GetListItems();
 
-    void SetProxyField(string name);
+        void SetProxyField(string name);
 
-    void DeleteItemByIndex(int index);
-  }
+        void DeleteItemByIndex(int index);
+    }
 }

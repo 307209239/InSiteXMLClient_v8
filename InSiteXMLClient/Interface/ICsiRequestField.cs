@@ -1,42 +1,41 @@
-﻿
-using Camstar.XMLClient.Enum;
+﻿using Camstar.XMLClient.Enum;
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiRequestField : ICsiField, ICsiXmlElement
-  {
-    ICsiRequestField RequestField(string fieldName);
+    public interface ICsiRequestField : ICsiField, ICsiXmlElement
+    {
+        ICsiRequestField RequestField(string fieldName);
 
-    void RequestSelectionValues();
+        void RequestSelectionValues();
 
-    void RequestAllFields();
+        void RequestAllFields();
 
-    void RequestAllFieldsRecursive();
+        void RequestAllFieldsRecursive();
 
-    ICsiRequestField RequestListItemByIndex(
-      int index,
-      string fieldName,
-      string CDOTypeName);
+        ICsiRequestField RequestListItemByIndex(
+          int index,
+          string fieldName,
+          string CDOTypeName);
 
-    void RequestUserDefinedFields();
+        void RequestUserDefinedFields();
 
-    void RequestFieldDefinition();
+        void RequestFieldDefinition();
 
-    void RequestCdoDefinition();
+        void RequestCdoDefinition();
 
-    void RequestUserDefinedFieldDefinitions();
+        void RequestUserDefinedFieldDefinitions();
 
-    void RequestCaption();
+        void RequestCaption();
 
-    ICsiRequestField RequestListItemByName(
-      string name,
-      string fieldName,
-      string CDOTypeName);
+        ICsiRequestField RequestListItemByName(
+          string name,
+          string fieldName,
+          string CDOTypeName);
 
-    void RequestDefaultValue();
+        void RequestDefaultValue();
 
-    ICsiRequestSelectionValuesEx RequestSelectionValuesEx();
+        ICsiRequestSelectionValuesEx RequestSelectionValuesEx();
 
-    void SetSerializationMode(SerializationModes mode);
-  }
+        void SetSerializationMode(SerializationModes mode);
+    }
 }

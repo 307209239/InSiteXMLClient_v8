@@ -1,7 +1,7 @@
-﻿using Camstar.XMLClient.API.Utilities;
+﻿using Camstar.Utility;
+using Camstar.XMLClient.API.Utilities;
 using Camstar.XMLClient.Interface;
 using System.Collections;
-using Camstar.Utility;
 
 namespace Camstar.XMLClient.API
 {
@@ -42,7 +42,7 @@ namespace Camstar.XMLClient.API
                 ICsiSession csiSession = (ICsiSession)new CsiSession(userName, string.Empty, (ICsiConnection)this);
                 csiSession.SessionId = sessionID;
                 csiSession.Host = this.mHost;
-                this.mSessions[(object)sessionName] = (object)csiSession;
+                this.mSessions[sessionName] = csiSession;
                 return csiSession;
             }
         }
@@ -58,12 +58,12 @@ namespace Camstar.XMLClient.API
                 csiSession.Port = this.mPort;
                 string license = CsiSessionManager.AddOrGetLicense(this.mHost, this.mPort, userName, password);
                 csiSession.SessionId = !string.IsNullOrEmpty(license) ? license : throw new CsiClientException(3014683L, this.GetType().FullName + ".createSession()");
-                this.mSessions[(object)sessionName] = (object)csiSession;
+                this.mSessions[sessionName] = csiSession;
                 return csiSession;
             }
         }
 
-        public ICsiSession FindSession(string sessionName) => this.mSessions[(object)sessionName] as ICsiSession;
+        public ICsiSession FindSession(string sessionName) => this.mSessions[sessionName] as ICsiSession;
 
         public void RemoveSession(string sessionName)
         {
@@ -72,7 +72,7 @@ namespace Camstar.XMLClient.API
                 ICsiSession session = this.FindSession(sessionName);
                 if (session != null)
                     CsiSessionManager.TryReleaseLicense(this.mHost, this.mPort, session.UserName, session.Password);
-                this.mSessions.Remove((object)sessionName);
+                this.mSessions.Remove(sessionName);
             }
         }
 

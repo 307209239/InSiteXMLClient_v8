@@ -1,14 +1,13 @@
-﻿
-namespace Camstar.XMLClient.Enum
+﻿namespace Camstar.XMLClient.Enum
 {
-  public enum CsiReferenceTypes
-  {
-    ReferenceTypeNone,
-    ReferenceTypeContainer,
-    ReferenceTypeNamedDataObject,
-    ReferenceTypeRevisionedObject,
-    ReferenceTypeSubEntity,
-    ReferenceTypeNamedSubEntity,
-    ReferenceTypeObject,
-  }
+    public enum CsiReferenceTypes
+    {
+        ReferenceTypeNone,
+        ReferenceTypeContainer,
+        ReferenceTypeNamedDataObject,
+        ReferenceTypeRevisionedObject,
+        ReferenceTypeSubEntity,
+        ReferenceTypeNamedSubEntity,
+        ReferenceTypeObject,
+    }
 }

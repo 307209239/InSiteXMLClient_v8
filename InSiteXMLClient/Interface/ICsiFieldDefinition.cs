@@ -1,36 +1,35 @@
-﻿
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiFieldDefinition : ICsiXmlElement
-  {
-    string GetFieldName();
+    public interface ICsiFieldDefinition : ICsiXmlElement
+    {
+        string GetFieldName();
 
-    int GetFieldId();
+        int GetFieldId();
 
-    ICsiLabel GetFieldLabel();
+        ICsiLabel GetFieldLabel();
 
-    string GetDataType();
+        string GetDataType();
 
-    ICsiCdoType GetFieldCdoType();
+        ICsiCdoType GetFieldCdoType();
 
-    bool IsHidden();
+        bool IsHidden();
 
-    bool IsReadOnly();
+        bool IsReadOnly();
 
-    bool IsListField();
+        bool IsListField();
 
-    bool IsObjectField();
+        bool IsObjectField();
 
-    bool IsRequired();
+        bool IsRequired();
 
-    bool IsValueRequired();
+        bool IsValueRequired();
 
-    bool IsUserDefinedField();
+        bool IsUserDefinedField();
 
-    bool IsTypeUnique();
+        bool IsTypeUnique();
 
-    bool OwnsObject();
+        bool OwnsObject();
 
-    bool HasSelectionValues();
-  }
+        bool HasSelectionValues();
+    }
 }

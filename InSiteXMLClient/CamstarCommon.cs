@@ -258,7 +258,7 @@ namespace InSiteXMLClient
         /// <returns></returns>
         public ICsiPerform Perform(PerformType type)
         {
-            switch (type)
+            switch(type) 
             {
                 case PerformType.Load:
                     return _service.Perform("Load");
@@ -710,7 +710,7 @@ namespace InSiteXMLClient
                 if (null != query)
                 {
                     var recordset = query.GetRecordset();
-                   return recordset.GetAsDataTable();
+                    return recordset.GetAsDataTable();
                     //if (null != recordset)
                     //{
                     //    var data = new DataTable();

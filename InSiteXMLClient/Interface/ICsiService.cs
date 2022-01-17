@@ -1,23 +1,23 @@
 ﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiService : ICsiObject, ICsiField, ICsiXmlElement
-  {
-    string GetUtcOffset();
+    public interface ICsiService : ICsiObject, ICsiField, ICsiXmlElement
+    {
+        string GetUtcOffset();
 
-    void SetUtcOffset(string offset);
+        void SetUtcOffset(string offset);
 
-    bool UseTxnGuid { set; }
+        bool UseTxnGuid { set; }
 
-    string ServiceTypeName();
+        string ServiceTypeName();
 
-    ICsiObject InputData();
+        ICsiObject InputData();
 
-    ICsiRequestData RequestData();
+        ICsiRequestData RequestData();
 
-    ICsiResponseData ResponseData();
+        ICsiResponseData ResponseData();
 
-    ICsiExceptionData ExceptionData();
+        ICsiExceptionData ExceptionData();
 
-    void SetExecute();
-  }
+        void SetExecute();
+    }
 }

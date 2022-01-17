@@ -7,7 +7,7 @@ namespace Camstar.Utility
     {
         private readonly ConcurrentStack<ServerConnection> _ConnCache = new ConcurrentStack<ServerConnection>();
 
-        public ServerConnectionPool() => ServerConnectionSettings.ConfigFileChanged += new EventHandler(this.OnConfigFileChanged);
+      
 
         private void OnConfigFileChanged(object sender, EventArgs e) => this._ConnCache.Clear();
 

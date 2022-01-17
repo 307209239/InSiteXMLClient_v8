@@ -1,13 +1,11 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiRecordsetHeaderColumn : ICsiXmlElement
-  {
-    string GetName();
+    public interface ICsiRecordsetHeaderColumn : ICsiXmlElement
+    {
+        string GetName();
 
-    ICsiLabel GetLabel();
+        ICsiLabel GetLabel();
 
-    ICsiFieldType GetFieldType();
-  }
+        ICsiFieldType GetFieldType();
+    }
 }

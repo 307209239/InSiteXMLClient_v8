@@ -1,10 +1,9 @@
-﻿
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiSelectionValue : ICsiXmlElement
-  {
-    string GetDisplayName();
+    public interface ICsiSelectionValue : ICsiXmlElement
+    {
+        string GetDisplayName();
 
-    string GetValue();
-  }
+        string GetValue();
+    }
 }

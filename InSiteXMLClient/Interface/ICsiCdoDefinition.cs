@@ -1,13 +1,11 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiCdoDefinition
-  {
-    string GetCdoTypeName();
+    public interface ICsiCdoDefinition
+    {
+        string GetCdoTypeName();
 
-    int GetCdoTypeId();
+        int GetCdoTypeId();
 
-    ICsiFieldDefinitions GetFieldDefinitions();
-  }
+        ICsiFieldDefinitions GetFieldDefinitions();
+    }
 }

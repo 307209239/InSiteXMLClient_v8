@@ -1,10 +1,7 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Xml;
 
 namespace Camstar.Utility
 {
@@ -23,10 +20,12 @@ namespace Camstar.Utility
         private int _HttpReadWriteTimeout = 300000;
         private int _changeNumber = ServerConnectionSettings.s_ChangeNumber;
         private static ServerConnectionSettings s_DefaultSettings = new ServerConnectionSettings();
-        private static string s_DefaultConfigurationFile = (string)null;
-       
+        private static string s_DefaultConfigurationFile = null;
+
         private static int s_ChangeNumber = 0;
+
         public ServerConnectionSettings Clone() => (ServerConnectionSettings)this.MemberwiseClone();
+
         public string Host
         {
             get => this._Host;
@@ -100,9 +99,8 @@ namespace Camstar.Utility
                 }
                 catch (Exception ex)
                 {
-                    string message = string.Format("Error checking log directory\r\n{0}", (object)ex.ToString());
+                    string message = string.Format("Error checking log directory\r\n{0}", ex.ToString());
                     Trace.TraceWarning(message);
-                  
                 }
             }
         }
@@ -149,7 +147,7 @@ namespace Camstar.Utility
             //        catch (IOException ex)
             //        {
             //            xmlDocument = (XmlDocument)null;
-            //            message1 = string.Format("Error reading cconfiguration file\r\n{0}\r\n{1}", (object)ex.HResult, (object)ex.ToString());
+            //            message1 = string.Format("Error reading cconfiguration file\r\n{0}\r\n{1}", ex.HResult, ex.ToString());
             //            Trace.TraceWarning(message1);
             //            if (-2147024864 == ex.HResult)
             //                flag2 = true;
@@ -157,7 +155,7 @@ namespace Camstar.Utility
             //        catch (Exception ex)
             //        {
             //            xmlDocument = (XmlDocument)null;
-            //            message1 = string.Format("Error reading cconfiguration file\r\n{0}", (object)ex.ToString());
+            //            message1 = string.Format("Error reading cconfiguration file\r\n{0}", ex.ToString());
             //            Trace.TraceWarning(message1);
             //        }
             //        finally
@@ -256,7 +254,7 @@ namespace Camstar.Utility
             //                        }
             //                        catch (Exception ex)
             //                        {
-            //                            string message2 = string.Format("Unable to validate log path\r\n{0}", (object)ex.ToString());
+            //                            string message2 = string.Format("Unable to validate log path\r\n{0}", ex.ToString());
             //                            Trace.TraceWarning(message2);
             //                            if (ServerConnectionSettings.s_EventLog != null)
             //                            {
@@ -336,15 +334,13 @@ namespace Camstar.Utility
             //catch (Exception ex)
             //{
             //    flag1 = false;
-            //    string message = string.Format("Error reading cconfiguration file\r\n{0}", (object)ex.ToString());
+            //    string message = string.Format("Error reading cconfiguration file\r\n{0}", ex.ToString());
             //    Trace.TraceWarning(message);
             //    if (ServerConnectionSettings.s_EventLog != null)
             //        ServerConnectionSettings.s_EventLog.WriteEntry(message, EventLogEntryType.Warning);
             //}
             //return flag1;
         }
-
-       
 
         public static string DefaultConfigurationFile
         {
@@ -354,7 +350,6 @@ namespace Camstar.Utility
                 if (string.IsNullOrWhiteSpace(value) || !File.Exists(value))
                     return;
                 Interlocked.Exchange<string>(ref ServerConnectionSettings.s_DefaultConfigurationFile, value);
-               
             }
         }
 
@@ -371,6 +366,6 @@ namespace Camstar.Utility
             }
         }
 
-        public static event EventHandler ConfigFileChanged;
+      
     }
 }

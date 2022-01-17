@@ -1,24 +1,23 @@
-﻿
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiRequestSelectionValuesEx : ICsiXmlElement
-  {
-    long GetResultsetSize();
+    public interface ICsiRequestSelectionValuesEx : ICsiXmlElement
+    {
+        long GetResultsetSize();
 
-    void SetResultsetSize(long size);
+        void SetResultsetSize(long size);
 
-    long GetStartRow();
+        long GetStartRow();
 
-    void SetStartRow(long startRow);
+        void SetStartRow(long startRow);
 
-    ICsiQueryParameters CreateQueryParameters();
+        ICsiQueryParameters CreateQueryParameters();
 
-    bool GetRequestRecordCount();
+        bool GetRequestRecordCount();
 
-    void SetRequestRecordCount(bool val);
+        void SetRequestRecordCount(bool val);
 
-    void ClearParameters();
+        void ClearParameters();
 
-    void SetParameter(string name, string val);
-  }
+        void SetParameter(string name, string val);
+    }
 }

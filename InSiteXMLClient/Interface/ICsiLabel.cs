@@ -1,15 +1,13 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiLabel : ICsiXmlElement
-  {
-    string GetDefaultValue();
+    public interface ICsiLabel : ICsiXmlElement
+    {
+        string GetDefaultValue();
 
-    string GetValue();
+        string GetValue();
 
-    int GetLabelId();
+        int GetLabelId();
 
-    string GetLabelName();
-  }
+        string GetLabelName();
+    }
 }

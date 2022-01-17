@@ -1,35 +1,33 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiParentInfo : ICsiXmlElement
-  {
-    void SetObjectId(string Id);
+    public interface ICsiParentInfo : ICsiXmlElement
+    {
+        void SetObjectId(string Id);
 
-    string GetParentId();
+        string GetParentId();
 
-    void SetParentId(string Id);
+        void SetParentId(string Id);
 
-    void SetObjectType(string cdoType);
+        void SetObjectType(string cdoType);
 
-    string GetNamedObjectRef();
+        string GetNamedObjectRef();
 
-    void SetNamedObjectRef(string name);
+        void SetNamedObjectRef(string name);
 
-    string GetName();
+        string GetName();
 
-    void SetName(string name);
+        void SetName(string name);
 
-    ICsiParentInfo GetParentInfo();
+        ICsiParentInfo GetParentInfo();
 
-    void SetContainerRef(string name, string level);
+        void SetContainerRef(string name, string level);
 
-    void SetRevisionedObjectRef(string name, string revision, bool useROR);
+        void SetRevisionedObjectRef(string name, string revision, bool useROR);
 
-    ICsiParentInfo ParentInfo();
+        ICsiParentInfo ParentInfo();
 
-    void GetContainerRef(out string name, out string level);
+        void GetContainerRef(out string name, out string level);
 
-    void GetRevisionedObjectRef(out string name, out string revision, out bool useROR);
-  }
+        void GetRevisionedObjectRef(out string name, out string revision, out bool useROR);
+    }
 }

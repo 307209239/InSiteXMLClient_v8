@@ -2,48 +2,48 @@
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiMetaData
-  {
-    ICsiCdoType GetCdoType();
+    public interface ICsiMetaData
+    {
+        ICsiCdoType GetCdoType();
 
-    ICsiCdoDefinition GetCdoDefinition();
+        ICsiCdoDefinition GetCdoDefinition();
 
-    ICsiLabel GetLabel();
+        ICsiLabel GetLabel();
 
-    ICsiLabel GetFieldLabel();
+        ICsiLabel GetFieldLabel();
 
-    ICsiLabel GetCdoLabel();
+        ICsiLabel GetCdoLabel();
 
-    ICsiFieldDefinition GetCdoField();
+        ICsiFieldDefinition GetCdoField();
 
-    void RequestCdoSubTypesByName(string name, bool recurse);
+        void RequestCdoSubTypesByName(string name, bool recurse);
 
-    void RequestCdoSubTypesById(int Id, bool recurse);
+        void RequestCdoSubTypesById(int Id, bool recurse);
 
-    void RequestCdoDefinitionByName(string name);
+        void RequestCdoDefinitionByName(string name);
 
-    void RequestCdoDefinitionById(int Id);
+        void RequestCdoDefinitionById(int Id);
 
-    void RequestCdoDefinitionFieldByName(string name, string fieldName);
+        void RequestCdoDefinitionFieldByName(string name, string fieldName);
 
-    void RequestLabelById(int labelId);
+        void RequestLabelById(int labelId);
 
-    void RequestLabelByName(string labelName);
+        void RequestLabelByName(string labelName);
 
-    void RequestQueryParameters(string queryName);
+        void RequestQueryParameters(string queryName);
 
-    void RequestCdoDefinition();
+        void RequestCdoDefinition();
 
-    void RequestUserDefinedFields();
+        void RequestUserDefinedFields();
 
-    void RequestFieldItem(string itemName);
+        void RequestFieldItem(string itemName);
 
-    void RequestFieldLabel();
+        void RequestFieldLabel();
 
-    void RequestCdoLabel();
+        void RequestCdoLabel();
 
-    ICsiQueryParameters GetQueryParameters();
+        ICsiQueryParameters GetQueryParameters();
 
-    Array GetUserDefinedFields();
-  }
+        Array GetUserDefinedFields();
+    }
 }

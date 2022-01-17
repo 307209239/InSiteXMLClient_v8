@@ -7,12 +7,11 @@ namespace Camstar.XMLClient.API.Utilities
 {
     public class csiWCFUtilities
     {
-
         public static string LogIn(
           string userName,
           string userPassword,
           out string sessionId,
-          string host, bool isSSL=true)
+          string host, bool isSSL = true)
         {
             try
             {
@@ -21,7 +20,7 @@ namespace Camstar.XMLClient.API.Utilities
                $"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\"><soapenv:Header/><soapenv:Body><tem:LoginFromXMLClient><tem:userName>{userName}</tem:userName><tem:password>{userPassword}</tem:password><tem:sessionGuid></tem:sessionGuid></tem:LoginFromXMLClient></soapenv:Body></soapenv:Envelope>";
                 byte[] bytes = Encoding.UTF8.GetBytes(xml);
                 ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-                HttpWebRequest request =isSSL? (HttpWebRequest)WebRequest.Create($"https://{host}/camstarsecurityservices/authenticationservice.svc"): (HttpWebRequest)WebRequest.Create($"http://{host}/camstarsecurityservices/authenticationservice.svc")
+                HttpWebRequest request = isSSL ? (HttpWebRequest)WebRequest.Create($"https://{host}/camstarsecurityservices/authenticationservice.svc") : (HttpWebRequest)WebRequest.Create($"http://{host}/camstarsecurityservices/authenticationservice.svc")
                         ;
                 request.Method = "POST";
                 request.ContentLength = bytes.Length;
@@ -52,8 +51,6 @@ namespace Camstar.XMLClient.API.Utilities
                     }
                     var end = strResult.IndexOf("</sessionGuid>");
                     sessionId = strResult.Substring(start, end - start);
-
-
                 }
             }
             catch (Exception e)
@@ -63,19 +60,17 @@ namespace Camstar.XMLClient.API.Utilities
             }
 
             return "";
-
         }
 
-        public static string Logout(string sessionId, string host,bool isSSL=true)
+        public static string Logout(string sessionId, string host, bool isSSL = true)
         {
             try
             {
-               
                 var xml =
                $"<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\"><soapenv:Header/><soapenv:Body><tem:Logout><tem:sessionGuid>{sessionId}</tem:sessionGuid></tem:Logout></soapenv:Body></soapenv:Envelope>";
                 byte[] bytes = Encoding.UTF8.GetBytes(xml);
                 ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
-                HttpWebRequest request = isSSL?(HttpWebRequest)WebRequest.Create($"https://{host}/camstarsecurityservices/authenticationservice.svc"):
+                HttpWebRequest request = isSSL ? (HttpWebRequest)WebRequest.Create($"https://{host}/camstarsecurityservices/authenticationservice.svc") :
                     (HttpWebRequest)WebRequest.Create($"http://{host}/camstarsecurityservices/authenticationservice.svc");
                 request.Method = "POST";
                 request.ContentLength = bytes.Length;
@@ -104,9 +99,6 @@ namespace Camstar.XMLClient.API.Utilities
             }
 
             return "";
-           
         }
-
-    
-}
+    }
 }

@@ -117,7 +117,7 @@ namespace Camstar.Util
             {
                 int length = strArray.Length;
                 for (int index = 0; index < length; ++index)
-                    arrayList.Add((object)strArray[index].Trim());
+                    arrayList.Add(strArray[index].Trim());
             }
             return arrayList;
         }
@@ -167,7 +167,7 @@ namespace Camstar.Util
         {
             //StringBuilder sb = new StringBuilder();
             //TextWriter textWriter = (TextWriter) new StringWriter(sb);
-            //new XmlSerializer(typeof (string), ns).Serialize(textWriter, (object) inp);
+            //new XmlSerializer(typeof , ns).Serialize(textWriter,  inp);
             //textWriter.Close();
             //sb.ToString();
             //Deflater deflater = new Deflater(1, true);
@@ -214,7 +214,7 @@ namespace Camstar.Util
 
         public static string StripHTMLTags(string html)
         {
-            string s = (string)null;
+            string s = null;
             if (html != null)
                 s = Regex.Replace(html, "<[^>]+?>", "");
             return HttpUtility.HtmlDecode(s);

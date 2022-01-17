@@ -1,45 +1,43 @@
-﻿using System;
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiDocument
-  {
-    bool GetAlwaysReturnSelectionValues();
+    public interface ICsiDocument
+    {
+        bool GetAlwaysReturnSelectionValues();
 
-    void SetAlwaysReturnSelectionValues(bool alwaysReturn);
+        void SetAlwaysReturnSelectionValues(bool alwaysReturn);
 
-    ICsiService[] GetServices();
+        ICsiService[] GetServices();
 
-    ICsiQuery[] GetQueries();
+        ICsiQuery[] GetQueries();
 
-    Array GetExceptions();
+        ICsiExceptionData[] GetExceptions();
 
-    ICsiService GetService();
+        ICsiService GetService();
 
-    ICsiQuery GetQuery();
+        ICsiQuery GetQuery();
 
-    void BuildFromString(string xml);
+        void BuildFromString(string xml);
 
-    ICsiService CreateService(string serviceType);
+        ICsiService CreateService(string serviceType);
 
-    ICsiQuery CreateQuery();
+        ICsiQuery CreateQuery();
 
-    ICsiDocument Submit();
+        ICsiDocument Submit();
 
-    bool CheckErrors();
+        bool CheckErrors();
 
-    ICsiExceptionData ExceptionData();
+        ICsiExceptionData ExceptionData();
 
-    ICsiRequestData RequestData();
+        ICsiRequestData RequestData();
 
-    ICsiResponseData ResponseData();
+        ICsiResponseData ResponseData();
 
-    string AsXml();
+        string AsXml();
 
-    string SaveRequestData(string filename, bool append);
+        string SaveRequestData(string filename, bool append);
 
-    string SaveResponseData(string filename, bool append);
+        string SaveResponseData(string filename, bool append);
 
-    string GetTxnGuid();
-  }
+        string GetTxnGuid();
+    }
 }

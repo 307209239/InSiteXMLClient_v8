@@ -1,11 +1,11 @@
 ﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiSelectionValuesEx : ICsiXmlElement
-  {
-    ICsiRecordset GetRecordset();
+    public interface ICsiSelectionValuesEx : ICsiXmlElement
+    {
+        ICsiRecordset GetRecordset();
 
-    ICsiRecordsetHeader GetRecordsetHeader();
+        ICsiRecordsetHeader GetRecordsetHeader();
 
-    long GetRecordCount();
-  }
+        long GetRecordCount();
+    }
 }

@@ -1,19 +1,17 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiNamedSubentityList : ICsiObjectList, ICsiList, ICsiField, ICsiXmlElement
-  {
-    ICsiNamedSubentity AppendItem(string name);
+    public interface ICsiNamedSubentityList : ICsiObjectList, ICsiList, ICsiField, ICsiXmlElement
+    {
+        ICsiNamedSubentity AppendItem(string name);
 
-    ICsiNamedSubentity DeleteItemByName(string name);
+        ICsiNamedSubentity DeleteItemByName(string name);
 
-    ICsiNamedSubentity ChangeItemByName(string name);
+        ICsiNamedSubentity ChangeItemByName(string name);
 
-    ICsiNamedSubentity ChangeItemByIndex(int index);
+        ICsiNamedSubentity ChangeItemByIndex(int index);
 
-    ICsiNamedSubentity GetItemByIndex(int index);
+        ICsiNamedSubentity GetItemByIndex(int index);
 
-    ICsiNamedSubentity GetItemByName(string name);
-  }
+        ICsiNamedSubentity GetItemByName(string name);
+    }
 }

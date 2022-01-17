@@ -1,27 +1,25 @@
-﻿using System;
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiField : ICsiXmlElement
-  {
-    ICsiSelectionValues GetSelectionValues();
+    public interface ICsiField : ICsiXmlElement
+    {
+        ICsiSelectionValues GetSelectionValues();
 
-    ICsiLabel GetCaption();
+        ICsiLabel GetCaption();
 
-    ICsiFieldDefinition GetFieldDefinition();
+        ICsiFieldDefinition GetFieldDefinition();
 
-    ICsiCdoDefinition GetCdoDefinition();
+        ICsiCdoDefinition GetCdoDefinition();
 
-    ICsiField GetDefaultValue();
+        ICsiField GetDefaultValue();
 
-    ICsiSelectionValuesEx GetSelectionValuesEx();
+        ICsiSelectionValuesEx GetSelectionValuesEx();
 
-    string GetSpecificType();
+        string GetSpecificType();
 
-   Enum.CsiGenericTypes GetGenericType();
+        Enum.CsiGenericTypes GetGenericType();
 
-   Enum.CsiReferenceTypes GetReferenceType();
+        Enum.CsiReferenceTypes GetReferenceType();
 
-    Array GetFields();
-  }
+        ICsiField[] GetFields();
+    }
 }

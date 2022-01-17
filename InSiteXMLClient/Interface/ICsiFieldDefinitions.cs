@@ -2,12 +2,12 @@
 
 namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiFieldDefinitions : ICsiXmlElement
-  {
-    Array GetAllFieldDefinitions();
+    public interface ICsiFieldDefinitions : ICsiXmlElement
+    {
+        Array GetAllFieldDefinitions();
 
-    ICsiFieldDefinition GetFieldDefinitionByName(string name);
+        ICsiFieldDefinition GetFieldDefinitionByName(string name);
 
-    ICsiFieldDefinition GetFieldDefinitionById(int id);
-  }
+        ICsiFieldDefinition GetFieldDefinitionById(int id);
+    }
 }

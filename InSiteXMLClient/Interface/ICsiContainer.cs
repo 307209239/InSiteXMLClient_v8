@@ -1,15 +1,13 @@
-﻿
-
-namespace Camstar.XMLClient.Interface
+﻿namespace Camstar.XMLClient.Interface
 {
-  public interface ICsiContainer : ICsiObject, ICsiField, ICsiXmlElement
-  {
-    void GetRef(out string name, out string level);
+    public interface ICsiContainer : ICsiObject, ICsiField, ICsiXmlElement
+    {
+        void GetRef(out string name, out string level);
 
-    void SetRef(string name, string level);
+        void SetRef(string name, string level);
 
-    string GetName();
+        string GetName();
 
-    string GetLevel();
-  }
+        string GetLevel();
+    }
 }
