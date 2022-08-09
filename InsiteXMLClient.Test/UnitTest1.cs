@@ -19,7 +19,7 @@ namespace InsiteXMLClient.Test
     [TestClass]
     public class UnitTest1
     {
-        private CamstarHelper helper => new CamstarHelper("172.17.176.217", 443, "camstaradmin", "abc123..");
+        private CamstarHelper helper => new CamstarHelper("192.168.18.129", 443, "camstaradmin", "abc123..");
 
         [TestMethod]
         public void NDO_Add_Test()
@@ -27,9 +27,17 @@ namespace InsiteXMLClient.Test
             var com = helper;
             com.CreateService("FactoryMaint");
             com.New("F1");
-            var re = com.ExecuteResult();
-            Console.WriteLine(re.Message);
-            Assert.IsTrue(re.Status);
+            com.Execute();
+            com.RequestData();
+            var re = com.RequestData();
+            re.RequestField("Container.Qty.Qty2");
+            var responseDocument =com. Submit();
+            var b = false;
+            var msg = "";
+            b = !responseDocument.CheckErrors(s => msg = s);
+           
+            Console.WriteLine(msg);
+            Assert.IsTrue(b);
         }
         [TestMethod]
         public void NDO_Update_Test()
@@ -46,7 +54,7 @@ namespace InsiteXMLClient.Test
         public void QueryTable_Test()
         {
             var com = helper;
-            var dt= com.QueryTable("select * from container where containername=?name", new Dictionary<string, string>() { { "name", "LOT01" } });
+            var dt= com.QueryTable("select * from employee ", new Dictionary<string, string>() { { "name", "LOT01" } });
             Assert.IsTrue(dt.Rows.Count>0);
         }
         [TestMethod]

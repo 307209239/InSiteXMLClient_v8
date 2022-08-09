@@ -66,7 +66,7 @@ namespace Camstar.XMLClient.API
                 return (ICsiXmlElement)Type.GetType(typeName).GetConstructor(new Type[2]
                 {
           typeof (ICsiDocument),
-          typeof (ICsiXmlElement)
+          typeof (XmlElement)
                 }).Invoke(new object[2]
                 {
            document,
