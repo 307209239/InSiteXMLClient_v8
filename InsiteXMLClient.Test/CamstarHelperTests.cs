@@ -12,7 +12,7 @@ namespace InSiteXMLClient.Tests
         [TestMethod()]
         public void CreateQueryTest()
         {
-            var helper = new CamstarHelper("localhost", 443, "camstaradmin", "abc123..");
+            var helper = new CamstarHelper("192.168.18.244", 2881, "camstaradmin", "abc123..");
             //var query= helper.CreateQuery();
             // query.SetUserQueryName("mlxGetContainers");
             // var dt= query.ExecuteTable();

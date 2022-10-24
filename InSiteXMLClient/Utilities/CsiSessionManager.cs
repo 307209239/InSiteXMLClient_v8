@@ -21,7 +21,10 @@ namespace Camstar.XMLClient.API.Utilities
                 if (!CsiSessionManager.ConnectionsHashtable.ContainsKey(key))
                 {
                     string sessionId = String.Empty;
-                    str2 = csiWCFUtilities.LogIn(userName, str1, out sessionId, host, port == 443);
+                    if (port == 443 || port == 80)
+                        str2 = csiWCFUtilities.LogIn(userName, str1, out sessionId, host, port == 443);
+                    else
+                        sessionId = Guid.NewGuid().ToString("D");
                     if (string.IsNullOrEmpty(str2))
                         CsiSessionManager.ConnectionsHashtable.TryAdd(key, new CsiSessionManager.SessionIdPair(sessionId)
                         {

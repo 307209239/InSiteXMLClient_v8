@@ -15,11 +15,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Connected Services\**" />
+    <EmbeddedResource Remove="Connected Services\**" />
+    <None Remove="Connected Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Connected Services\" />
     <Folder Include="Utility\" />
   </ItemGroup>
 

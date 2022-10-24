@@ -38,7 +38,8 @@ namespace Camstar.XMLClient.API
                 if (string.IsNullOrEmpty(value))
                     return;
                 this.mSessionID = value;
-                this.mPassword = string.Empty;
+                if (Port == 80 || Port == 443)
+                 this.mPassword =string.Empty;
             }
         }
 

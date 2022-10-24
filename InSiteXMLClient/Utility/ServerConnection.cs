@@ -155,7 +155,7 @@ namespace Camstar.Utility
             }
             catch (SocketException ex)
             {
-                this._TcpClient = (TcpClient)null;
+                this._TcpClient = null;
 
                 throw ex;
             }
@@ -174,12 +174,12 @@ namespace Camstar.Utility
             if (this._TcpClient != null)
             {
                 this._TcpClient.Close();
-                this._TcpClient = (TcpClient)null;
+                this._TcpClient = null;
             }
             if (this._Stream != null)
             {
                 this._Stream.Close();
-                this._Stream = (NetworkStream)null;
+                this._Stream = null;
             }
             this._InboundXML = string.Empty;
             this._InboundXMLFile = string.Empty;
