@@ -38,8 +38,8 @@ namespace Camstar.XMLClient.API
                 if (string.IsNullOrEmpty(value))
                     return;
                 this.mSessionID = value;
-                if (Port == 80 || Port == 443)
-                 this.mPassword =string.Empty;
+                //if (Port == 80 || Port == 443)
+                // this.mPassword =string.Empty;
             }
         }
 
@@ -134,7 +134,7 @@ namespace Camstar.XMLClient.API
             ICsiDocument ownerDocument = parent.GetOwnerDocument();
             ICsiXmlElement parent1 = (ICsiXmlElement)new CsiXmlElement(ownerDocument, "__connect", parent);
             new CsiNamedObject(ownerDocument, "user", parent1).SetRef(userName);
-            new CsiDataField(ownerDocument, nameof(password), parent1).SetEncryptedValue(password);
+            new CsiDataField(ownerDocument, nameof(password), parent1).SetValue(password);
         }
 
         internal ICsiDocument Submit(ICsiDocument document)

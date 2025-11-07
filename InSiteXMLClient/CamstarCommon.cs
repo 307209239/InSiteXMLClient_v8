@@ -425,7 +425,7 @@ namespace InSiteXMLClient
                 if (null != query)
                 {
                     var recordset = query.GetRecordset();
-                    if (null != recordset)
+                    if (null != recordset&&recordset.GetRecordCount()>0)
                     {
                         return recordset.GetAsDataTable();
                         //var data = new DataTable();
@@ -447,6 +447,10 @@ namespace InSiteXMLClient
                         //}
 
                         //return data;
+                    }
+                    else
+                    {
+                        return new DataTable();
                     }
                 }
             }

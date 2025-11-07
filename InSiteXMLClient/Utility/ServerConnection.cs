@@ -501,7 +501,7 @@ namespace Camstar.Utility
                     Directory.CreateDirectory(path);
                 flag = true;
             }
-            catch 
+            catch
             {
             }
             return flag;
@@ -518,7 +518,7 @@ namespace Camstar.Utility
             {
                 stringBuilder.Append(Thread.CurrentThread.ExecutionContext.GetHashCode().ToString("d2"));
             }
-            catch 
+            catch
             {
             }
             stringBuilder.Append('_');
@@ -619,10 +619,10 @@ namespace Camstar.Utility
                                     if (reader.LocalName != "__encrypted")
                                         xmlWriter.WriteAttributeString(reader.LocalName, reader.Value);
                                 }
-                                xmlWriter.WriteAttributeString("__encrypted", "yes");
+                                xmlWriter.WriteAttributeString("__encrypted", "no");
                                 int content = (int)reader.MoveToContent();
                                 string fieldData = reader.ReadElementContentAsString();
-                                xmlWriter.WriteValue(CryptUtil.Encrypt(fieldData));
+                                xmlWriter.WriteValue(fieldData);
                                 xmlWriter.WriteEndElement();
                             }
                             else
@@ -635,7 +635,7 @@ namespace Camstar.Utility
                     str1 = sb.ToString();
                 }
             }
-            catch 
+            catch
             {
                 str1 = document;
             }
@@ -660,12 +660,12 @@ namespace Camstar.Utility
                 streamWriter.WriteLine(this.MaskPassword(document1));
                 streamWriter.Close();
             }
-            catch 
+            catch
             {
             }
         }
 
-        private bool RemoteCertificateValidationCallback(object sender,X509Certificate cert,X509Chain chain,SslPolicyErrors errors)
+        private bool RemoteCertificateValidationCallback(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors errors)
         {
             return true;
             //return (uint)errors <= 0U || (this.Settings.IgnoreInvalidCert || this.IsHostLocalMachine(this.Settings.Host));

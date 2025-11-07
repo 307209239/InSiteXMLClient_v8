@@ -11,8 +11,8 @@ namespace Camstar.XMLClient.API.Utilities
 
         public static string AddOrGetLicense(string host, int port, string userName, string password)
         {
-            string str1 = CryptUtil.Encrypt(password);
-            string key = CsiSessionManager.GetKey(host, port, userName, str1);
+
+            string key = CsiSessionManager.GetKey(host, port, userName, password);
             if (!CsiSessionManager.Lockers.ContainsKey(key))
                 CsiSessionManager.Lockers.TryAdd(key, new object());
             lock (CsiSessionManager.Lockers[key])
@@ -20,11 +20,7 @@ namespace Camstar.XMLClient.API.Utilities
                 string str2 = string.Empty;
                 if (!CsiSessionManager.ConnectionsHashtable.ContainsKey(key))
                 {
-                    string sessionId = String.Empty;
-                    if (port == 443 || port == 80)
-                        str2 = csiWCFUtilities.LogIn(userName, str1, out sessionId, host, port == 443);
-                    else
-                        sessionId = Guid.NewGuid().ToString("D");
+                    string sessionId = Guid.NewGuid().ToString("D");
                     if (string.IsNullOrEmpty(str2))
                         CsiSessionManager.ConnectionsHashtable.TryAdd(key, new CsiSessionManager.SessionIdPair(sessionId)
                         {
@@ -45,8 +41,8 @@ namespace Camstar.XMLClient.API.Utilities
             int idleSessionTimeout = CsiClient.CamstarServerIdleSessionTimeout;
             if (idleSessionTimeout > 0)
             {
-                string str = CryptUtil.Encrypt(password);
-                string key = CsiSessionManager.GetKey(host, port, userName, str);
+                //string str = CryptUtil.Encrypt(password);
+                string key = CsiSessionManager.GetKey(host, port, userName, password);
                 if (CsiSessionManager.Lockers.ContainsKey(key))
                 {
                     lock (CsiSessionManager.Lockers[key])
@@ -59,14 +55,8 @@ namespace Camstar.XMLClient.API.Utilities
                                 if (DateTime.UtcNow - sessionIdPair.LastUsageUtcTime >= new TimeSpan(0, idleSessionTimeout, 0))
                                 {
                                     int licenseHolders = sessionIdPair.LicenseHolders;
-                                    csiWCFUtilities.Logout(sessionIdPair.SessionId, host, port == 443);
                                     CsiSessionManager.ConnectionsHashtable.TryRemove(key, out sessionIdPair);
-                                    if (string.IsNullOrEmpty(csiWCFUtilities.LogIn(userName, str, out sessionId, host, port == 443)))
-                                        CsiSessionManager.ConnectionsHashtable.TryAdd(key, new CsiSessionManager.SessionIdPair(sessionId)
-                                        {
-                                            LastUsageUtcTime = DateTime.UtcNow,
-                                            LicenseHolders = licenseHolders
-                                        });
+
                                 }
                                 else
                                     sessionIdPair.LastUsageUtcTime = DateTime.UtcNow;
@@ -80,8 +70,8 @@ namespace Camstar.XMLClient.API.Utilities
 
         public static void TryReleaseLicense(string host, int port, string userName, string password)
         {
-            string password1 = CryptUtil.Encrypt(password);
-            string key = CsiSessionManager.GetKey(host, port, userName, password1);
+            //string password1 = CryptUtil.Encrypt(password);
+            string key = CsiSessionManager.GetKey(host, port, userName, password);
             if (!CsiSessionManager.Lockers.ContainsKey(key))
                 return;
             lock (CsiSessionManager.Lockers[key])
